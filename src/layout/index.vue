@@ -158,6 +158,11 @@ export default {
               name: '管理员管理',
               path: '/userList',
             },
+            {
+              id: 12,
+              name: '显示列表',
+              path: '/showList',
+            },
           ],
         },
       ]

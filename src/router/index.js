@@ -62,6 +62,12 @@ export const constantRoutes = [
         meta: { title: '管理员列表', icon: 'user', affix: true },
       },
       {
+        path: '/showList',
+        component: () => import('@/views/commer/showList'),
+        name: 'user',
+        meta: { title: '展示列表', icon: 'user', affix: true },
+      },
+      {
         path: '/layout',
         component: () => import('@/views/commer/topUsergetPage'),
         name: 'user',

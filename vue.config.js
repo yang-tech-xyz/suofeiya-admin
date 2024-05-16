@@ -30,22 +30,27 @@ module.exports = {
   lintOnSave: false,
   productionSourceMap: false,
   devServer: {
-    port: port,
+    https: false,
+    hotOnly: true, //是否开启热更新
     open: true,
     overlay: {
       warnings: false,
       errors: true
     },
     proxy: {
-      '/': {
-        target: process.env.VUE_APP_BASE_API,
-        changeOrigin: true,
-        pathRewrite: {
-          "^/": "",
-        }
+      // '/': {
+      //   // target: process.env.VUE_APP_BASE_API,
+      //   target:'http://43.136.88.180:18081',
+      //   changeOrigin: true,
+      // },
+      '/api': {
+          target: 'http://43.136.88.180:18082', // 代理的目标地址
+          changeOrigin: true, // 是否改变源
+          pathRewrite: {
+            '^/api/admin': '/' 
+          }
       }
-
-    },
+    }
   },
   configureWebpack: {
     // provide the app's title in webpack's name field, so that
