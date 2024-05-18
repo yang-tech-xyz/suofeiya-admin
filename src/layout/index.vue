@@ -159,10 +159,16 @@ export default {
               path: '/userList',
             },
             {
+              id: 14,
+              name: '统计',
+              path: '/analyse',
+            },           
+            {
               id: 12,
               name: '显示列表',
               path: '/showList',
             },
+                                                                                                                                                                                                                     
           ],
         },
       ]

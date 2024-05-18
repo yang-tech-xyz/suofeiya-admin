@@ -62,6 +62,12 @@ export const constantRoutes = [
         meta: { title: '管理员列表', icon: 'user', affix: true },
       },
       {
+        path: '/analyse',
+        component: () => import('@/views/commer/analyse'),
+        name: 'user',
+        meta: { title: '统计分析', icon: 'user', affix: true },
+      },
+      {
         path: '/showList',
         component: () => import('@/views/commer/showList'),
         name: 'user',
