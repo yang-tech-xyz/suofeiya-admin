@@ -1,52 +1,79 @@
 <template>
   <div class="controller">
-    <div ref="pieChart" class="chart-container" />
-    <div ref="lineChart" class="chart-container" />
+    <div ref="pieChart" class="chart-container"/>
     <div class="chart-container">
-      <div class="search-container">
-        <el-input v-model="symbol" placeholder="请输入用户id" class="input" />
-        <el-button type="primary" @click="searchSymbol">确认</el-button>
+      <div class="margin-context">
+        用户邀请统计
       </div>
-      <el-table :data="tableDataSymbol" v-loading="loadingSymbol" element-loading-text="加载中" :height="'250px'">
-        <el-table-column prop="symbol" label="币种" />
-        <el-table-column prop="deposit" label="充值金额" />
-        <el-table-column prop="withdraw" label="提现金额" />
-        <el-table-column prop="diff" label="差额" />
-      </el-table>
-      <el-pagination
-        @size-change="handleSymbolSizeChange"
-        @current-change="handleSymbolCurrentChange"
-        :current-page="currentPageSymbol"
-        :page-size="pageSizeSymbol"
-        :page-sizes="[10]"
-        layout="total, sizes, prev, pager, next, jumper"
-        :total="totalRowsSymbol"
-      /> 
-    </div>
-    <div class="chart-container">
       <div class="search-container">
         <!-- <el-input v-model="userInput" placeholder="请输入用户名id" class="input" /> -->
-        <el-input v-model="walletInput" placeholder="请输入钱包号" class="input" />
-        <el-button type="primary" @click="search">确认</el-button>
+        <el-form :inline="true">
+          <el-form-item label="钱包:">
+            <el-input v-model="walletInput" placeholder="请输入钱包号" class="input"/>
+          </el-form-item>
+          <el-button type="primary" @click="search">确认</el-button>
+        </el-form>
       </div>
       <el-table :data="tableData" v-loading="loading" element-loading-text="加载中" :height="'250px'">
         <!-- 表格列 -->
-        <el-table-column prop="userId" label="ID" />
-        <el-table-column prop="wallet" label="钱包" />
-        <el-table-column prop="invitedUserId" label="邀请人 ID" />
-        <el-table-column prop="inviteMemberCount" label="被邀请人" />
-        <el-table-column prop="inviteMemberPowerNumber" label="矿机台数" />
+        <el-table-column prop="userId" label="ID"/>
+        <el-table-column prop="wallet" label="钱包"/>
+        <el-table-column prop="invitedUserId" label="邀请人 ID"/>
+        <el-table-column prop="inviteMemberCount" label="被邀请人"/>
+        <el-table-column prop="inviteMemberPowerNumber" label="矿机台数"/>
       </el-table>
       <el-pagination
-        @size-change="handleSizeChange"
-        @current-change="handleCurrentChange"
-        :current-page="currentPage"
-        :page-sizes="[10]"
-        :page-size="pageSize"
-        layout="total, sizes, prev, pager, next, jumper"
-        :total="totalRows"
-      /> 
+          @size-change="handleSizeChange"
+          @current-change="handleCurrentChange"
+          :current-page="currentPage"
+          :page-sizes="[10]"
+          :page-size="pageSize"
+          layout="total, sizes, prev, pager, next, jumper"
+          :total="totalRows"
+      />
     </div>
+    <div class="chart-container" style="width: 100%;">
+      <div class="margin-context">
+        今日出入金统计
+      </div>
+      <!--      <div class="search-container">-->
+      <!--        <el-input v-model="symbol" placeholder="请输入用户id" class="input"/>-->
+      <!--        <el-button type="primary" @click="searchSymbol">确认</el-button>-->
+      <!--      </div>-->
+      <el-table :data="scatterData" v-loading="loadingSymbol" element-loading-text="加载中" :height="'250px'">
+        <el-table-column prop="symbol" label="币种"/>
+        <el-table-column prop="deposit" label="充值金额"/>
+        <el-table-column prop="withdraw" label="提现金额"/>
+        <el-table-column prop="diff" label="差额"/>
+      </el-table>
+    </div>
+    <!--    -->
+    <!--&lt;!&ndash;    <div ref="lineChart" class="chart-container"/>&ndash;&gt;-->
+    <!--    <div class="chart-container" style="width: 100%;">-->
+    <!--      <div class="margin-context">-->
+    <!--        今日出入金统计-->
+    <!--      </div>-->
+    <!--      <div class="search-container">-->
+    <!--        <el-input v-model="symbol" placeholder="请输入用户id" class="input"/>-->
+    <!--        <el-button type="primary" @click="searchSymbol">确认</el-button>-->
+    <!--      </div>-->
+    <!--      <el-table :data="tableDataSymbol" v-loading="loadingSymbol" element-loading-text="加载中" :height="'250px'">-->
+    <!--        <el-table-column prop="symbol" label="币种"/>-->
+    <!--        <el-table-column prop="deposit" label="充值金额"/>-->
+    <!--        <el-table-column prop="withdraw" label="提现金额"/>-->
+    <!--        <el-table-column prop="diff" label="差额"/>-->
+    <!--      </el-table>-->
+    <!--      <el-pagination-->
+    <!--          @size-change="handleSymbolSizeChange"-->
+    <!--          @current-change="handleSymbolCurrentChange"-->
+    <!--          :current-page="currentPageSymbol"-->
+    <!--          :page-size="pageSizeSymbol"-->
+    <!--          :page-sizes="[10]"-->
+    <!--          layout="total, sizes, prev, pager, next, jumper"-->
+    <!--          :total="totalRowsSymbol"-->
+    <!--      />-->
+    <!--    </div>-->
+
   </div>
 </template>
 
@@ -68,12 +95,12 @@ export default {
       walletInput: '', // 用户输入的钱包号
       userInput: 0, // 用户输入的用户名ID
       currentPage: 1, // 当前页数
-      pageSize: 10, // 每页条数
+      pageSize: 9999999, // 每页条数
       totalRows: 0, // 总条数
       loading: false, // 加载状态
       currentPageSymbol: 1,
       pageSizeSymbol: 10,
-      symbol:''
+      symbol: ''
     }
   },
   created() {
@@ -124,10 +151,11 @@ export default {
         // const response = await service.get("/topSettle/getDepositWithdrawPage",)
         // this.lineData = response.list
         // !!!!!!!!!!!!!!记得修改回下面那个请求路径！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！
-        const response = await service.get("/topSettle/getDepositWithdrawList")
-          this.lineData = response.data
-          console.log(response, '柱状图数据获取成功',this.lineData);
-          this.updateLineChart();
+        const data = await service.get("/topSettle/getDepositWithdrawList")
+        // this.lineData = response.data
+        this.scatterData = data
+        // console.log(response, '柱状图数据获取成功', this.lineData);
+        // this.updateLineChart();
       } catch (error) {
         console.error('获取柱状图数据失败：', error);
       }
@@ -135,15 +163,15 @@ export default {
     async getTableData() {
       try {
         this.loading = true;
-        const dto  = {
+        const dto = {
           pageNum: this.currentPage, // 当前页数
           pageSize: this.pageSize, // 每页条数
         }
         // debugger
-        const response2 = await service.get("/topSettle/getMemberInvitePage",{params:dto})
-        console.log(response2.list,2222222222222)
+        const response2 = await service.get("/topSettle/getMemberInvitePage", {params: dto})
+        console.log(response2.list, 2222222222222)
         this.tableData = response2.list;
-        this.totalRows = Number( response2.total);
+        this.totalRows = Number(response2.total);
       } catch (error) {
         console.error('获取表格数据失败：', error);
       } finally {
@@ -152,14 +180,14 @@ export default {
     },
     async getTableDataSymbol() {
       try {
-        const dto  = {
+        const dto = {
           pageNum: this.currentPageSymbol, // 当前页数
           pageSize: this.pageSizeSymbol, // 每页条数
         }
         this.loadingSymbol = true;
-        const response2 = await service.get("/topSettle/getDepositWithdrawPage",{params:dto})
+        const response2 = await service.get("/topSettle/getDepositWithdrawPage", {params: dto})
         this.tableDataSymbol = response2.list;
-        this.totalRowsSymbol =Number( response2.total);
+        this.totalRowsSymbol = Number(response2.total);
       } catch (error) {
         console.error('获取表格数据失败：', error);
       } finally {
@@ -168,20 +196,20 @@ export default {
     },
     async search() {
       // 根据输入的钱包号和用户名搜索表格数据
-      console.log(this.userInput,this.walletInput,66666666666666);
-      const dto = {wallet:this.walletInput}
+      console.log(this.userInput, this.walletInput, 66666666666666);
+      const dto = {wallet: this.walletInput}
       // const response2 = await service.get("/topSettle/getMemberInvitePage",{params:dto})
-      const response2 = await service.get("/topSettle/getMemberInvitePage",{params:dto})
+      const response2 = await service.get("/topSettle/getMemberInvitePage", {params: dto})
       this.tableData = response2.list;
       this.totalRows = response2.total;
     },
-    async searchSymbol(){
-      const dto = {userId:this.symbol}
-      const response2 = await service.get("/topSettle/getDepositWithdrawPage",{params:dto})
+    async searchSymbol() {
+      const dto = {userId: this.symbol}
+      const response2 = await service.get("/topSettle/getDepositWithdrawPage", {params: dto})
       console.log(response2);
       this.tableDataSymbol = response2.list;
-      this.totalRowsSymbol =Number( response2.total);
-      
+      this.totalRowsSymbol = Number(response2.total);
+
     },
     handleSizeChange(newSize) {
       this.pageSize = newSize;
@@ -206,7 +234,7 @@ export default {
       }
 
       const dataSource = {
-        totalNum: parseInt(this.pieData.totalCount),
+        totalNum: parseInt(this.pieData.totalCount ?? 0),
         dataList: [
           {
             title: '昨日新增',
@@ -271,7 +299,7 @@ export default {
       return {
         title: {
           text: `今日新增用户数`,
-          subtext: `(${total}人)`,
+          subtext: `(${total ?? 0}人)`,
           left: 'center'
         },
         tooltip: {
@@ -311,7 +339,7 @@ export default {
             type: 'shadow'
           }
         },
-        legend: {   
+        legend: {
           data: ['Deposit', 'Withdraw', 'Diff'],
           left: 'right'
         },
@@ -362,9 +390,9 @@ export default {
   justify-content: space-around;
 
   .chart-container {
-    width: 45%;
-    height: 400px;
-    margin: 20px;
+    width: 47%;
+    //min-height: 400px;
+    margin: 10px 10px;
     border: 1px solid #ccc;
     box-shadow: 2px 2px 12px rgba(0, 0, 0, 0.1);
     position: relative; /* 确保容器定位 */
@@ -377,6 +405,13 @@ export default {
     align-items: center;
     margin-bottom: 5px;
     padding: 5px; /* 增加内边距 */
+  }
+
+  .margin-context {
+    text-align: center;
+    margin: 0px auto;
+    font-weight: 700;
+    margin-bottom: 10px;
   }
 
   .input {

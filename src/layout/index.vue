@@ -165,7 +165,7 @@ export default {
             },           
             {
               id: 12,
-              name: '显示列表',
+              name: '公告管理',
               path: '/showList',
             },
                                                                                                                                                                                                                      

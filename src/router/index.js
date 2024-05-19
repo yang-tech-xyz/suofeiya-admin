@@ -71,7 +71,7 @@ export const constantRoutes = [
         path: '/showList',
         component: () => import('@/views/commer/showList'),
         name: 'user',
-        meta: { title: '展示列表', icon: 'user', affix: true },
+        meta: { title: '公告管理', icon: 'user', affix: true },
       },
       {
         path: '/layout',

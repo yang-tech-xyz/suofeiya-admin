@@ -15,6 +15,7 @@
     />
 
     <div class="right-menu">
+      <transaction-msg></transaction-msg>
       <!-- <template v-if="device !== 'mobile'">
         <error-log class="errLog-container right-menu-item hover-effect" />
 
@@ -104,9 +105,11 @@ import ErrorLog from '@/components/ErrorLog'
 import Screenfull from '@/components/Screenfull'
 import SizeSelect from '@/components/SizeSelect'
 import Search from '@/components/HeaderSearch'
+import TransactionMsg from "@/components/transactionMsg/TransactionMsg.vue";
 
 export default {
   components: {
+    TransactionMsg,
     Breadcrumb,
     Hamburger,
     ErrorLog,
@@ -205,6 +208,7 @@ export default {
   }
 
   .right-menu {
+    display: flex;
     float: right;
     height: 100%;
     line-height: 50px;
