@@ -1,78 +1,101 @@
 <template>
   <div class="controller">
     <div ref="pieChart" class="chart-container"/>
-    <div class="chart-container">
+
+<!--    <div ref="lineChart" class="chart-container"/>-->
+
+    <div class="chart-container" >
       <div class="margin-context">
-        用户邀请统计
+        今日出入金
       </div>
       <div class="search-container">
-        <!-- <el-input v-model="userInput" placeholder="请输入用户名id" class="input" /> -->
-        <el-form :inline="true">
-          <el-form-item label="钱包:">
-            <el-input v-model="walletInput" placeholder="请输入钱包号" class="input"/>
-          </el-form-item>
-          <el-button type="primary" @click="search">确认</el-button>
-        </el-form>
       </div>
-      <el-table :data="tableData" v-loading="loading" element-loading-text="加载中" :height="'250px'">
-        <!-- 表格列 -->
-        <el-table-column prop="userId" label="ID"/>
-        <el-table-column prop="wallet" label="钱包"/>
-        <el-table-column prop="invitedUserId" label="邀请人 ID"/>
-        <el-table-column prop="inviteMemberCount" label="被邀请人"/>
-        <el-table-column prop="inviteMemberPowerNumber" label="矿机台数"/>
-      </el-table>
-      <el-pagination
-          @size-change="handleSizeChange"
-          @current-change="handleCurrentChange"
-          :current-page="currentPage"
-          :page-sizes="[10]"
-          :page-size="pageSize"
-          layout="total, sizes, prev, pager, next, jumper"
-          :total="totalRows"
-      />
-    </div>
-    <div class="chart-container" style="width: 100%;">
-      <div class="margin-context">
-        今日出入金统计
-      </div>
-      <!--      <div class="search-container">-->
-      <!--        <el-input v-model="symbol" placeholder="请输入用户id" class="input"/>-->
-      <!--        <el-button type="primary" @click="searchSymbol">确认</el-button>-->
-      <!--      </div>-->
-      <el-table :data="scatterData" v-loading="loadingSymbol" element-loading-text="加载中" :height="'250px'">
+      <el-table :data="withdrawList.data" v-loading="withdrawList.loading" element-loading-text="加载中" :height="'250px'">
         <el-table-column prop="symbol" label="币种"/>
         <el-table-column prop="deposit" label="充值金额"/>
         <el-table-column prop="withdraw" label="提现金额"/>
         <el-table-column prop="diff" label="差额"/>
       </el-table>
     </div>
-    <!--    -->
-    <!--&lt;!&ndash;    <div ref="lineChart" class="chart-container"/>&ndash;&gt;-->
-    <!--    <div class="chart-container" style="width: 100%;">-->
-    <!--      <div class="margin-context">-->
-    <!--        今日出入金统计-->
-    <!--      </div>-->
-    <!--      <div class="search-container">-->
-    <!--        <el-input v-model="symbol" placeholder="请输入用户id" class="input"/>-->
-    <!--        <el-button type="primary" @click="searchSymbol">确认</el-button>-->
-    <!--      </div>-->
-    <!--      <el-table :data="tableDataSymbol" v-loading="loadingSymbol" element-loading-text="加载中" :height="'250px'">-->
-    <!--        <el-table-column prop="symbol" label="币种"/>-->
-    <!--        <el-table-column prop="deposit" label="充值金额"/>-->
-    <!--        <el-table-column prop="withdraw" label="提现金额"/>-->
-    <!--        <el-table-column prop="diff" label="差额"/>-->
-    <!--      </el-table>-->
-    <!--      <el-pagination-->
-    <!--          @size-change="handleSymbolSizeChange"-->
-    <!--          @current-change="handleSymbolCurrentChange"-->
-    <!--          :current-page="currentPageSymbol"-->
-    <!--          :page-size="pageSizeSymbol"-->
-    <!--          :page-sizes="[10]"-->
-    <!--          layout="total, sizes, prev, pager, next, jumper"-->
-    <!--          :total="totalRowsSymbol"-->
-    <!--      />-->
-    <!--    </div>-->
+
+    <div class="chart-container" style="width: 100%;">
+      <div class="margin-context">
+        用户邀请统计
+      </div>
+      <div class="search-container">
+        <!-- <el-input v-model="userInput" placeholder="请输入用户名id" class="input" /> -->
+        <el-form :inline="true">
+          <el-form-item label="用户ID:">
+            <el-input v-model="invitePage.walletUserId" placeholder="请输入用户ID" class="input"/>
+          </el-form-item>
+          <el-form-item label="钱包:">
+            <el-input v-model="invitePage.walletInput" placeholder="请输入钱包号" class="input"/>
+          </el-form-item>
+          <el-button type="primary" @click="getMemberInvitePage">确认</el-button>
+        </el-form>
+      </div>
+      <el-table :data="invitePage.tableData" v-loading="invitePage.loading" element-loading-text="加载中" :height="'250px'">
+        <!-- 表格列 -->
+        <el-table-column prop="userId" label="ID"/>
+        <el-table-column prop="wallet" label="钱包"/>
+        <el-table-column prop="invitedUserId" label="邀请人 ID"/>
+        <el-table-column prop="invitedUserWallet" label="邀请人的地址"/>
+        <el-table-column prop="inviteMemberCount" label="被邀请人数量"/>
+        <el-table-column prop="inviteMemberPowerNumber" label="矿机台数"/>
+      </el-table>
+      <el-pagination
+          @size-change="invitePageHandleSizeChange"
+          @current-change="invitePageHandleCurrentChange"
+          :current-page="invitePage.pageNum"
+          :page-sizes="[10,20,50,100]"
+          :page-size="invitePage.pageSize"
+          layout="total, sizes, prev, pager, next, jumper"
+          :total="invitePage.totalRows"
+      />
+    </div>
+
+    <div class="chart-container" style="width: 100%;">
+      <div class="margin-context">
+        今日出入金统计
+      </div>
+      <div class="search-container">
+        <el-form :inline="true">
+          <el-form-item label="用户ID:">
+            <el-input v-model="withdrawPage.walletUserId" placeholder="请输入用户ID" class="input"/>
+          </el-form-item>
+          <el-form-item label="钱包:">
+            <el-input v-model="withdrawPage.walletInput" placeholder="请输入钱包号" class="input"/>
+          </el-form-item>
+          <el-form-item label="时间范围:">
+            <el-date-picker
+                v-model="withdrawPage.time"
+                type="datetimerange"
+                format="yyyy-MM-dd HH:mm:ss"
+                range-separator="至"
+                start-placeholder="开始日期"
+                end-placeholder="结束日期">
+            </el-date-picker>
+          </el-form-item>
+          <el-button type="primary" @click="getDepositWithdrawPage">确认</el-button>
+        </el-form>
+
+      </div>
+      <el-table :data="withdrawPage.tableData" v-loading="withdrawPage.loadingSymbol" element-loading-text="加载中" :height="'250px'">
+        <el-table-column prop="symbol" label="币种"/>
+        <el-table-column prop="deposit" label="充值金额"/>
+        <el-table-column prop="withdraw" label="提现金额"/>
+        <el-table-column prop="diff" label="差额"/>
+      </el-table>
+      <el-pagination
+          @size-change="withdrawPageHandleSize"
+          @current-change="withdrawPageHandleChange"
+          :current-page="withdrawPage.pageNum"
+          :page-size="withdrawPage.pageSize"
+          :page-sizes="[20,30,50,100]"
+          layout="total, sizes, prev, pager, next, jumper"
+          :total="withdrawPage.total"
+      />
+    </div>
 
   </div>
 </template>
@@ -80,6 +103,7 @@
 <script>
 import service from "@/utils/request"
 import * as echarts from 'echarts'
+import {parseTime} from "@/utils";
 
 export default {
   data() {
@@ -88,11 +112,37 @@ export default {
       barData: [], // 用于存储柱状图数据的变量
       lineData: [], // 用于存储折线图数据的变量
       scatterData: [], // 用于存储散点图数据的变量
+      withdrawPage:{
+        walletUserId:"",
+        walletInput:'',
+        time:[],
+        pageNum:0,
+        pageSize:20,
+        total:0,
+
+        tableData:[],
+      },
+      withdrawList:{
+        data:[],
+        loading:false,
+      },
+      // 用户邀请统计
+      invitePage:{
+        loading:false,
+
+        tableData:[],
+        walletInput:"",
+        walletUserId:"",
+        pageNum:0,
+        pageSize:20,
+        totalRows:0,
+      },
       tableData: [], // 用于存储表格数据的变量
       tableDataSymbol: [],
       totalRowsSymbol: 0,
       loadingSymbol: false,
       walletInput: '', // 用户输入的钱包号
+      walletUserId: '', // 用户输入的用户id
       userInput: 0, // 用户输入的用户名ID
       currentPage: 1, // 当前页数
       pageSize: 9999999, // 每页条数
@@ -106,22 +156,15 @@ export default {
   created() {
     this.getPieData();
     this.getLineData();
-    this.getTableData();
-    this.getTableDataSymbol()
   },
   mounted() {
     window.addEventListener('resize', this.handleResize); // 监听窗口大小变化
+    this.getDepositWithdrawPage()
+    this.getMemberInvitePage();
+
   },
   beforeDestroy() {
     window.removeEventListener('resize', this.handleResize); // 移除监听器
-  },
-  watch: {
-    currentPageSymbol() {
-      this.getTableDataSymbol(); // 当 currentPageSymbol 变化时调用获取数据的方法
-    },
-    currentPage() {
-      this.getTableData(); // 当 currentPage 变化时调用获取数据的方法
-    }
   },
   methods: {
     handleResize() {
@@ -148,52 +191,41 @@ export default {
     },
     async getLineData() {
       try {
+        this.withdrawList.loading = true;
         // const response = await service.get("/topSettle/getDepositWithdrawPage",)
         // this.lineData = response.list
         // !!!!!!!!!!!!!!记得修改回下面那个请求路径！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！
         const data = await service.get("/topSettle/getDepositWithdrawList")
         // this.lineData = response.data
-        this.scatterData = data
+        this.withdrawList.data = data
+        this.withdrawList.loading = false
         // console.log(response, '柱状图数据获取成功', this.lineData);
         // this.updateLineChart();
       } catch (error) {
         console.error('获取柱状图数据失败：', error);
       }
     },
-    async getTableData() {
+    async getMemberInvitePage() {
       try {
-        this.loading = true;
+        this.invitePage.loading = true;
         const dto = {
-          pageNum: this.currentPage, // 当前页数
-          pageSize: this.pageSize, // 每页条数
+          userId: this.invitePage.walletUserId,
+          wallet: this.invitePage.walletInput,
+          pageNum: this.invitePage.pageNum, // 当前页数
+          pageSize: this.invitePage.pageSize, // 每页条数
         }
         // debugger
         const response2 = await service.get("/topSettle/getMemberInvitePage", {params: dto})
-        console.log(response2.list, 2222222222222)
-        this.tableData = response2.list;
-        this.totalRows = Number(response2.total);
+        this.invitePage.tableData = response2.list;
+        this.invitePage.totalRows = Number(response2.total);
+        this.invitePage.loading = false;
       } catch (error) {
         console.error('获取表格数据失败：', error);
       } finally {
         this.loading = false;
       }
     },
-    async getTableDataSymbol() {
-      try {
-        const dto = {
-          pageNum: this.currentPageSymbol, // 当前页数
-          pageSize: this.pageSizeSymbol, // 每页条数
-        }
-        this.loadingSymbol = true;
-        const response2 = await service.get("/topSettle/getDepositWithdrawPage", {params: dto})
-        this.tableDataSymbol = response2.list;
-        this.totalRowsSymbol = Number(response2.total);
-      } catch (error) {
-        console.error('获取表格数据失败：', error);
-      } finally {
-        this.loadingSymbol = false;
-      }
-    },
+
     async search() {
       // 根据输入的钱包号和用户名搜索表格数据
       console.log(this.userInput, this.walletInput, 66666666666666);
@@ -203,13 +235,28 @@ export default {
       this.tableData = response2.list;
       this.totalRows = response2.total;
     },
-    async searchSymbol() {
-      const dto = {userId: this.symbol}
+    async getDepositWithdrawPage() {
+      this.withdrawPage.loadingSymbol = true
+      let dto = {
+        userId: this.withdrawPage.walletUserId,
+        wallet: this.withdrawPage.walletInput,
+        pageNum: this.withdrawPage.pageNum, // 当前页数
+        pageSize: this.withdrawPage.pageSize, // 每页条数
+      }
+      if(this.withdrawPage.time && this.withdrawPage.time[0] && this.withdrawPage.time[1]){
+        dto.startDateTime = parseTime(new Date(this.withdrawPage.time[0])) ;
+        dto.endDateTime =  parseTime(new Date(this.withdrawPage.time[1])) ;
+      }
       const response2 = await service.get("/topSettle/getDepositWithdrawPage", {params: dto})
-      console.log(response2);
-      this.tableDataSymbol = response2.list;
-      this.totalRowsSymbol = Number(response2.total);
-
+      this.withdrawPage.tableData = response2.list;
+      this.withdrawPage.total = Number(response2.total);
+      this.withdrawPage.loadingSymbol = false
+    },
+    invitePageHandleSizeChange(newSize){
+      this.invitePage.pageSize = newSize
+    },
+    invitePageHandleCurrentChange(newPage){
+      this.invitePage.newPage = newPage;
     },
     handleSizeChange(newSize) {
       this.pageSize = newSize;
@@ -219,13 +266,13 @@ export default {
       this.currentPage = newPage;
       this.getTableData(); // 重新获取数据
     },
-    handleSymbolSizeChange(newSize) {
-      this.pageSizeSymbol = newSize;
-      this.getTableDataSymbol(); // 重新获取数据
+    withdrawPageHandleSize(newSize) {
+      this.withdrawPage.pageSize = newSize;
+      this.getDepositWithdrawPage(); // 重新获取数据
     },
-    handleSymbolCurrentChange(newPage) {
-      this.currentPageSymbol = newPage;
-      this.getTableDataSymbol(); // 重新获取数据
+    withdrawPageHandleChange(newPage) {
+      this.withdrawPage.pageNum = newPage;
+      this.getDepositWithdrawPage(); // 重新获取数据
     },
     updatePieChart() {
       if (!this.pieData || typeof this.pieData.yesterdayCount === 'undefined' || typeof this.pieData.todayCount === 'undefined') {
@@ -237,11 +284,11 @@ export default {
         totalNum: parseInt(this.pieData.totalCount ?? 0),
         dataList: [
           {
-            title: '昨日新增',
+            title: '昨日注册用户',
             countNum: parseInt(this.pieData.yesterdayCount)
           },
           {
-            title: '今日新增',
+            title: '今日注册用户',
             countNum: parseInt(this.pieData.todayCount)
           },
           {

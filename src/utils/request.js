@@ -10,8 +10,9 @@ import fileDownload from 'js-file-download'
 const service = axios.create({
   timeout: 50000,
   // baseURL:'https://tophisadmin.tophis.net/api/admin'
-  baseURL: window.location.origin+'/tophis/api/admin'
- 
+  // baseURL: window.location.origin+'/api/admin'
+  baseURL: window.location.origin+'/tophis-admin'
+
 })
 
 // request interceptor
@@ -69,7 +70,7 @@ service.interceptors.response.use(
     }
 
     // if the custom code is not 20000, it is judged as an error.
-    if (response.data.code != 200 && !response.data.access_token) {
+    if (response.data.code != 200 && !response.data.access_token && !response.config.notShowError) {
       Message({
         message: res.msg || '请求失败',
         type: 'error',
@@ -84,12 +85,14 @@ service.interceptors.response.use(
     }
   },
   error => {
-    console.log(error.response) // for debug
-    Message({
-      message: error.response.data.msg,
-      type: 'error',
-      duration: 5 * 1000
-    })
+    if( !error.response.config.notShowError){
+      Message({
+        message: error.response.data.msg,
+        type: 'error',
+        duration: 5 * 1000
+      })
+    }
+
     if (error.response.data.msg === '未登录') {
       // to re-login
       store.dispatch('user/resetToken').then(() => {
