@@ -31,27 +31,30 @@
           <el-form-item label="钱包:">
             <el-input v-model="invitePage.walletInput" placeholder="请输入钱包号" class="input"/>
           </el-form-item>
-          <el-button type="primary" @click="getMemberInvitePage">确认</el-button>
+          <el-button type="primary" @click="getMemberInvitePage">搜索</el-button>
+          <el-button type="" @click="invitePage.walletUserId='';invitePage.walletInput=''; getMemberInvitePage()">重置</el-button>
         </el-form>
       </div>
-      <el-table :data="invitePage.tableData" v-loading="invitePage.loading" element-loading-text="加载中" :height="'250px'">
+      <el-table :data="invitePage.tableData" v-loading="invitePage.loading" element-loading-text="加载中" :height="'450px'">
         <!-- 表格列 -->
         <el-table-column prop="userId" label="ID"/>
         <el-table-column prop="wallet" label="钱包"/>
-        <el-table-column prop="invitedUserId" label="邀请人 ID"/>
-        <el-table-column prop="invitedUserWallet" label="邀请人的地址"/>
-        <el-table-column prop="inviteMemberCount" label="被邀请人数量"/>
-        <el-table-column prop="inviteMemberPowerNumber" label="矿机台数"/>
+        <el-table-column prop="invitedUserId" label="上级用户 ID"/>
+        <el-table-column prop="invitedUserWallet" label="上级钱包地址"/>
+        <el-table-column prop="inviteMemberCount" label="伞下用户数"/>
+        <el-table-column prop="inviteMemberPowerNumber" label="伞下矿机台数"/>
       </el-table>
-      <el-pagination
-          @size-change="invitePageHandleSizeChange"
-          @current-change="invitePageHandleCurrentChange"
-          :current-page="invitePage.pageNum"
-          :page-sizes="[10,20,50,100]"
-          :page-size="invitePage.pageSize"
-          layout="total, sizes, prev, pager, next, jumper"
-          :total="invitePage.totalRows"
-      />
+      <div style="margin: 0 auto;width: fit-content">
+        <el-pagination
+            @size-change="invitePageHandleSizeChange"
+            @current-change="invitePageHandleCurrentChange"
+            :current-page="invitePage.pageNum"
+            :page-sizes="[10,20,50,100]"
+            :page-size="invitePage.pageSize"
+            layout="total, sizes, prev, pager, next, jumper"
+            :total="invitePage.totalRows"
+        />
+      </div>
     </div>
 
     <div class="chart-container" style="width: 100%;">
@@ -59,42 +62,47 @@
         今日出入金统计
       </div>
       <div class="search-container">
-        <el-form :inline="true">
+        <el-form :inline="true" >
           <el-form-item label="用户ID:">
-            <el-input v-model="withdrawPage.walletUserId" placeholder="请输入用户ID" class="input"/>
+            <el-input v-model="withdrawPage.walletUserId" placeholder="请输入用户ID" class="input"  style="width: 130px" />
           </el-form-item>
           <el-form-item label="钱包:">
             <el-input v-model="withdrawPage.walletInput" placeholder="请输入钱包号" class="input"/>
           </el-form-item>
           <el-form-item label="时间范围:">
             <el-date-picker
+                style="width: 300px"
                 v-model="withdrawPage.time"
-                type="datetimerange"
-                format="yyyy-MM-dd HH:mm:ss"
+                type="daterange"
+                format="yyyy-MM-dd"
                 range-separator="至"
                 start-placeholder="开始日期"
                 end-placeholder="结束日期">
             </el-date-picker>
           </el-form-item>
-          <el-button type="primary" @click="getDepositWithdrawPage">确认</el-button>
+          <el-button type="primary" @click="getDepositWithdrawPage">搜索</el-button>
+          <el-button type="" @click="withdrawPage.walletUserId='';withdrawPage.walletInput='';withdrawPage.time=''; getDepositWithdrawPage()">重置</el-button>
         </el-form>
 
       </div>
-      <el-table :data="withdrawPage.tableData" v-loading="withdrawPage.loadingSymbol" element-loading-text="加载中" :height="'250px'">
+      <el-table :data="withdrawPage.tableData" v-loading="withdrawPage.loadingSymbol" element-loading-text="加载中" :height="'450px'" style="margin-top:30px">
         <el-table-column prop="symbol" label="币种"/>
         <el-table-column prop="deposit" label="充值金额"/>
         <el-table-column prop="withdraw" label="提现金额"/>
-        <el-table-column prop="diff" label="差额"/>
+        <el-table-column prop="diff" label="差额（充值 - 提现）"/>
       </el-table>
-      <el-pagination
-          @size-change="withdrawPageHandleSize"
-          @current-change="withdrawPageHandleChange"
-          :current-page="withdrawPage.pageNum"
-          :page-size="withdrawPage.pageSize"
-          :page-sizes="[20,30,50,100]"
-          layout="total, sizes, prev, pager, next, jumper"
-          :total="withdrawPage.total"
-      />
+      <div style="margin: 0 auto;width: fit-content">
+        <el-pagination
+            @size-change="withdrawPageHandleSize"
+            @current-change="withdrawPageHandleChange"
+            :current-page="withdrawPage.pageNum"
+            :page-size="withdrawPage.pageSize"
+            :page-sizes="[20,30,50,100]"
+            layout="total, sizes, prev, pager, next, jumper"
+            :total="withdrawPage.total"
+        />
+      </div>
+
     </div>
 
   </div>
@@ -244,8 +252,9 @@ export default {
         pageSize: this.withdrawPage.pageSize, // 每页条数
       }
       if(this.withdrawPage.time && this.withdrawPage.time[0] && this.withdrawPage.time[1]){
-        dto.startDateTime = parseTime(new Date(this.withdrawPage.time[0])) ;
-        dto.endDateTime =  parseTime(new Date(this.withdrawPage.time[1])) ;
+        console.log(this.withdrawPage.time,"this.withdrawPage.time")
+        dto.startDateTime = parseTime(this.withdrawPage.time[0],'{y}-{m}-{d}')  + " 00:00:00";
+        dto.endDateTime =  parseTime(this.withdrawPage.time[1],'{y}-{m}-{d}') + " 23:59:59" ;
       }
       const response2 = await service.get("/topSettle/getDepositWithdrawPage", {params: dto})
       this.withdrawPage.tableData = response2.list;
@@ -346,7 +355,7 @@ export default {
       return {
         title: {
           text: `今日新增用户数`,
-          subtext: `(${total ?? 0}人)`,
+          subtext: ``,
           left: 'center'
         },
         tooltip: {
