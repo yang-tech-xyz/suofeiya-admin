@@ -1,14 +1,16 @@
 <template>
   <div class="crud-container">
     <!-- 按钮用于 CRUD 操作 -->
+    <el-button @click="getList">刷新</el-button>
     <el-button type="primary" @click="showAddDialog">新增</el-button>
 
     <!-- 表格用于显示数据 -->
-    <el-table :data="paginatedData" element-loading-text="加载中" :height="'500px'" style="width: 100%" >
+    <el-table :data="paginatedData" element-loading-text="加载中" :height="'500px'" style="width: 100%"  v-loading="logging">
       <!-- 其他数据列 -->
       <el-table-column prop="id" label="ID" width="80px"></el-table-column>
       <el-table-column prop="title" label="标题"></el-table-column>
       <el-table-column prop="createdBy" label="创建人" width="120px"></el-table-column>
+      <el-table-column prop="seq" label="排序" width="50px"></el-table-column>
       <el-table-column prop="createdDate" label="创建时间" width="180px"></el-table-column>
       <!-- 操作列 -->
       <el-table-column label="操作" width="180px">
@@ -44,11 +46,11 @@
         <el-form-item :label="labels.title" prop="title">
           <el-input v-model="formData.title"></el-input>
         </el-form-item>
-        <el-form-item :label="labels.createdBy" prop="createdBy">
-          <el-input v-model="formData.createdBy"></el-input>
+        <el-form-item :label="labels.seq" prop="seq">
+          <el-input v-model="formData.seq"></el-input>
         </el-form-item>
         <el-form-item :label="labels.contents" prop="contents">
-          <el-input v-model="formData.contents" type="textarea"></el-input>
+          <el-input v-model="formData.contents" type="textarea" :rows="4"></el-input>
         </el-form-item>
       </el-form>
       <span slot="footer" class="dialog-footer">
@@ -82,12 +84,14 @@ export default {
         total: 0
       },
       dialogVisible: false,
+      logging:false,
       dialogTitle: '',
       formData: {
         title: '',
         createdBy: '',
         contents: '',
-        lang:''
+        lang:'',
+        seq:'',
       },
       deleteDialogVisible: false,
       selectedRows: [],
@@ -105,8 +109,9 @@ export default {
       selectedLanguage: 'zh_CN',
       labels: {
         title: '标题',
+        seq:'排序',
         createdBy: '创建人',
-        contents: '富文本内容'
+        contents: '内容'
       }
     };
   },
@@ -138,11 +143,13 @@ export default {
       }, 1000);
     },
     getList() {
+      this.logging = true
       // 这里要做分页。。。
       service
         .get("/topNotice/getList")
         .then((data) => {
           this.tableData = data
+          this.logging = false
         })
         .catch((error) => {
           console.error('获取数据失败：', error);

@@ -143,7 +143,8 @@
           </el-table-column>
           <el-table-column label="操作" width="260">
             <template slot-scope="scope">
-              <el-button style="margin-bottom: 10px;"  v-if="scope.row.transNo" @click="showTooltip=false;isUpdateRateBTC = true;transactionNo=scope.row.transNo">
+
+              <el-button  style="margin-bottom: 10px;"  v-if="scope.row.symbol == 'BTC' && scope.row.transNo" @click="showTooltip=false;isUpdateRateBTC = true;transactionNo=scope.row.transNo">
                 BTC提现审批
               </el-button>
               <el-button style="margin-bottom: 10px;"  v-if="scope.row.transNo" @click="showTooltip=false;isUpdateRate = true;transactionNo=scope.row.transNo;">

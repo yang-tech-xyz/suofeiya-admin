@@ -6,7 +6,7 @@
       :form-arr="formArr"
     >
       <template v-slot:userBtn="scope">
-        <el-button style="margin-bottom: 10px;"  v-if="scope.row.transNo" @click="isUpdateRateBTC = true;transactionNo=scope.row.transNo">
+        <el-button style="margin-bottom: 10px;"  v-if="scope.row.symbol == 'BTC' && scope.row.transNo" @click="isUpdateRateBTC = true;transactionNo=scope.row.transNo">
           BTC提现审批
         </el-button>
         <el-button style="margin-bottom: 10px;"  v-if="scope.row.transNo" @click="isUpdateRate = true;transactionNo=scope.row.transNo;">
