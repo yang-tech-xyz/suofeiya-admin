@@ -19,7 +19,12 @@ export default {
         noOperation:1
       },
       formArr: [
-      
+        {
+          label: '用户ID',
+          prop: 'userId',
+          type: 'input',
+          search: 1,
+        },
         {
           label: '钱包地址',
           prop: 'wallet',

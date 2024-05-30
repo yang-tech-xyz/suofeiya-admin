@@ -43,6 +43,7 @@
         <el-table-column prop="invitedUserWallet" label="上级钱包地址"/>
         <el-table-column prop="inviteMemberCount" label="伞下用户数"/>
         <el-table-column prop="inviteMemberPowerNumber" label="伞下矿机台数"/>
+        <el-table-column prop="totalStoreAmount" label="伞下总质押量"/>
       </el-table>
       <div style="margin: 0 auto;width: fit-content">
         <el-pagination
@@ -105,6 +106,32 @@
 
     </div>
 
+    <div class="chart-container" style="width: 100%;">
+      <div class="margin-context">
+        用户直推统计
+      </div>
+      <div class="search-container">
+        <el-form :inline="true" >
+          <el-form-item label="用户ID:">
+            <el-input v-model="userDirect.userId" placeholder="请输入用户ID" class="input"  style="width: 130px" />
+          </el-form-item>
+          <el-form-item label="钱包:">
+            <el-input v-model="userDirect.wallet" placeholder="请输入钱包号" class="input"/>
+          </el-form-item>
+          <el-button type="primary" @click="getUserDirect()">搜索</el-button>
+          <el-button type="" @click="userDirect.userId='';userDirect.wallet='';getUserDirect()">重置</el-button>
+        </el-form>
+
+      </div>
+      <el-table :data="userDirect.tableData" v-loading="userDirect.loadingSymbol" element-loading-text="加载中" :height="'450px'" style="margin-top:30px">
+        <el-table-column prop="userId" label="用户ID"/>
+        <el-table-column prop="wallet" label="钱包"/>
+        <el-table-column prop="grade" label="等级"/>
+        <el-table-column prop="totalInviteUser" label="伞下用户数"/>
+        <el-table-column prop="totalInvitePowerNumber" label="伞下矿机台数"/>
+      </el-table>
+    </div>
+
   </div>
 </template>
 
@@ -120,6 +147,12 @@ export default {
       barData: [], // 用于存储柱状图数据的变量
       lineData: [], // 用于存储折线图数据的变量
       scatterData: [], // 用于存储散点图数据的变量
+      userDirect:{
+        userId:"",
+        wallet:"",
+        tableData:[],
+        loadingSymbol:false
+      },
       withdrawPage:{
         walletUserId:"",
         walletInput:'',
@@ -182,6 +215,21 @@ export default {
           echarts.getInstanceByDom(this.$refs[chartRef]).resize();
         }
       });
+    },
+    async getUserDirect(){
+      this.userDirect.loadingSymbol = true;
+      let data = {}
+      if(this.userDirect.userId){
+        data.userId  = this.userDirect.userId;
+      }
+      if( this.userDirect.wallet){
+        data.wallet = this.userDirect.wallet
+      }
+      const response = await service.get("/topSettle/getDirect",{params: data})
+      if (response) {
+        this.userDirect.tableData = response
+        this.userDirect.loadingSymbol = false;
+      }
     },
     async getPieData() {
       try {

@@ -118,17 +118,46 @@ export default {
         operateWidth:'260'
       },
       formArr: [
+        // {
+        //   label: 'id',
+        //   prop: 'id',
+        //   type: 'input',
+        //   width: '60',
+        // },
         {
-          label: 'id',
-          prop: 'id',
+          label: '用户id',
+          prop: 'userId',
           type: 'input',
-          width: '60',
+          width: '100',
         },
         {
-          label: '事务编号',
-          prop: 'transNo',
+          label: '提现接收地址',
+          prop: 'withdrawReceiveAddress',
           type: 'input',
           width: '180',
+        },
+        {
+          label: 'token标记',
+          prop: 'symbol',
+          type: 'input',
+          width: '100',
+        },
+        {
+          label: '充值数量',
+          prop: 'tokenAmount',
+          type: 'input',
+        },
+        {
+          label: '提现数量',
+          prop: 'withdrawAmount',
+          type: 'input',
+          width: '140',
+        },
+        {
+          label: '节点id',
+          prop: 'chainId',
+          type: 'input',
+          width: '80',
         },
         {
           label: '链hash',
@@ -137,6 +166,45 @@ export default {
           search: 1,
           width: '280',
         },
+
+
+        {
+          label: '事务状态',
+          prop: 'status',
+          type: 'status',
+          width: '80',
+          options: [
+            {
+              value: '0x0',
+              label: '未审核',
+            }, {
+              value: '0x1',
+              label: '审核通过',
+            },{
+              value: '0x2',
+              label: '审核拒绝',
+            },
+          ]
+        },
+        {
+          label: '链rpc节点',
+          prop: 'rpcEndpoint',
+          type: 'input',
+          width: '160',
+        },
+        {
+          label: 'erc20地址',
+          prop: 'erc20Address',
+          type: 'input',
+          width: '200',
+        },
+        {
+          label: '事务编号',
+          prop: 'transNo',
+          type: 'input',
+          width: '180',
+        },
+
         {
           label: '类型',
           prop: 'type',
@@ -163,41 +231,15 @@ export default {
             },
           ],
         },
-        {
-          label: '节点id',
-          prop: 'chainId',
-          type: 'input',
-          width: '80',
-        },
+
         {
           label: '币种id',
           prop: 'tokenId',
           type: 'input',
           width: '80',
         },
-        {
-          label: '链rpc节点',
-          prop: 'rpcEndpoint',
-          type: 'input',
-          width: '160',
-        },
-        {
-          label: '事务状态',
-          prop: 'status',
-          type: 'input',
-          width: '80',
-        },
-        {
-          label: 'token标记',
-          prop: 'symbol',
-          type: 'input',
-          width: '100',
-        },
-        {
-          label: '充值数量',
-          prop: 'tokenAmount',
-          type: 'input',
-        },
+
+
         {
           label: '充值是否成功标价',
           prop: 'isConfirm',
@@ -218,11 +260,6 @@ export default {
         {
           label: '事务区块高度',
           prop: 'height',
-          type: 'input',
-        },
-        {
-          label: '用户id',
-          prop: 'userId',
           type: 'input',
         },
         {
@@ -253,25 +290,6 @@ export default {
               label: '提现BTC',
             },
           ],
-        },
-   
-        {
-          label: 'erc20地址',
-          prop: 'erc20Address',
-          type: 'input',
-          width: '200',
-        },
-        {
-          label: '提现接收地址',
-          prop: 'withdrawReceiveAddress',
-          type: 'input',
-          width: '180',
-        },
-        {
-          label: '提现数量',
-          prop: 'withdrawAmount',
-          type: 'input',
-          width: '140',
         },
 
         {

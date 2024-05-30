@@ -1,10 +1,22 @@
 <template>
   <div>
+
+
     <elTableColumns
       ref="elTableColumns"
       :data-obj="dataObj"
       :form-arr="formArr"
-    />
+      @isGetParams="isGetParams"
+      >
+      <template v-slot:btnOther>
+        <elTableColumns
+            ref="elTableColumnsStatistics"
+            :noShowOp="true"
+            :data-obj="getStatisticsDataObj"
+            :form-arr="getStatisticsFormArr"
+        />
+      </template>
+    </elTableColumns>
   </div>
 </template>
 
@@ -12,10 +24,28 @@
 export default {
   data() {
     return {
+      getStatisticsDataObj:{
+        name: '算力收益汇总',
+        listUrl: '/topPowerSharingIncome/getStatistics',
+        dataFormObj: {},
+        isGetParams:1,
+        noOperation:1,
+      },
+      getStatisticsFormArr:[
+        {
+          label: '币种',
+          prop: 'symbol',
+        },
+        {
+          label: '金额',
+          prop: 'income',
+        },
+      ],
       dataObj: {
         name: '算力收益明细',
         listUrl: '/topPowerOrderIncome/getPage',
         dataFormObj: {},
+        isGetParams:1,
         noOperation: 1,
       },
       formArr: [
@@ -97,8 +127,15 @@ export default {
     }
   },
 
-  mounted() {},
-  methods: {},
+  mounted() {
+
+  },
+  methods: {
+     isGetParams(params){
+       this.$refs.elTableColumnsStatistics.getDataList(params)
+        console.log("isGetParams",params)
+    }
+  },
 }
 </script>
 <style lang="scss" scoped></style>

@@ -144,7 +144,7 @@ export default {
 
             {
               id: 10,
-              name: '提现管理',
+              name: '充提管理',
               path: '/transaction',
             },
             // {

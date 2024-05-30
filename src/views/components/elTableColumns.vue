@@ -92,7 +92,7 @@
           </el-form-item>
         </span>
 
-        <span class="btns" style="display: inline-block;">
+        <span class="btns" style="display: inline-block;" v-if="!noShowOp">
           <el-form-item v-if="dataFormArr.length">
             <el-button
               type="primary"
@@ -619,6 +619,7 @@ export default {
   props: {
     formArr: { type: Array, default: [] },
     dataObj: { type: Object, default: {} },
+    noShowOp:false,
     isSecondary: { type: String, default: '' },
   },
 
@@ -668,7 +669,7 @@ export default {
     },
 
     // 列表查询
-    getDataList() {
+    getDataList(params) {
       if (this.dataObj.isObj) {
         this.dataList = [this.dataObj.detailObj]
         this.dataListLoading = false
@@ -719,10 +720,16 @@ export default {
           dataForm['accId'] = this.$route.query.accId
         }
       }
-
-      let params = {
+      if (this.dataObj.name == '用户列表') {
+        console.log("this.dataObj",this.dataObj.dataFormObj)
+        if (dataForm.id) {
+          dataForm['userId'] = dataForm.id
+        }
+      }
+      params = {
         ...dataForm,
         ...this.dataObj.dataFormObj,
+        ...params
       }
       if (this.dataObj.noParameters) {
         params = {}
@@ -755,13 +762,17 @@ export default {
           }
 
           this.dataListLoading = false
-          if (this.dataObj.isGetParams) {
-            this.$emit('isGetParams', params)
-          }
+
         })
         .catch((err) => {
           this.dataListLoading = false
         })
+      console.log("调用了吗")
+      if (this.dataObj.isGetParams) {
+        console.log("调用了吗111111111")
+
+        this.$emit('isGetParams', params)
+      }
     },
     formatGap(receivingTime) {
       const staytimeGap =
@@ -840,6 +851,8 @@ export default {
     },
     changeFn(e, prop) {
       const obj = JSON.parse(JSON.stringify(e))
+      obj['userId'] = e.id
+
       if (this.dataObj.name == '用户管理') {
         obj['lockFlag'] = e.lockFlag
         const postList = []
@@ -854,6 +867,7 @@ export default {
 
         obj['role'] = postList
       }
+      console.log("changeFn",obj)
 
       this.$axios[this.dataObj.axiosSwitchType || 'put'](
         this.dataObj.switchUrl,

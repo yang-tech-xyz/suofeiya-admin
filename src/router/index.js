@@ -129,7 +129,7 @@ export const constantRoutes = [
         path: '/transaction',
         component: () => import('@/views/commer/transaction'),
         name: 'user',
-        meta: { title: '提现管理', icon: 'user', affix: true },
+        meta: { title: '充提管理', icon: 'user', affix: true },
       },{
         path: '/rechargeManagement',
         component: () => import('@/views/commer/rechargeManagement'),

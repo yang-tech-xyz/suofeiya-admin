@@ -1,6 +1,6 @@
 <template>
   <div>
-    <elTableColumns v-if="dataObj.dataFormObj.mchId" ref="elTableColumns" :data-obj="dataObj" :form-arr="formArr" />
+    <elTableColumns v-if="dataObj.dataFormObj.mchId" ref="elTableColumns" :data-obj="dataObj" :form-arr="formArr"/>
 
   </div>
 </template>
@@ -77,10 +77,10 @@ export default {
         const arr = []
         for (var i in res) {
           arr.push(
-            {
-              value: i,
-              label: res[i]
-            }
+              {
+                value: i,
+                label: res[i]
+              }
           )
         }
         this.formArr.forEach((r) => {
