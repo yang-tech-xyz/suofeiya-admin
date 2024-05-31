@@ -36,7 +36,7 @@ export default {
         },
         {
           label: '金额',
-          prop: 'income',
+          prop: 'symbol',
         },
       ],
 

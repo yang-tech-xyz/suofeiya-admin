@@ -10,7 +10,7 @@
           BTC提现审批
         </el-button>
         <el-button style="margin-bottom: 10px;"  v-if="scope.row.transNo" @click="isUpdateRate = true;transactionNo=scope.row.transNo;">
-          提现审批
+          {{ ['recharge'].includes(scope.row.status)?'充值':'提现' }}审批
         </el-button>
       </template>
     </elTableColumns>
@@ -164,10 +164,14 @@ export default {
           prop: 'hash',
           type: 'input',
           search: 1,
-          width: '280',
+          width: '120',
         },
-
-
+        {
+          label: '链rpc节点',
+          prop: 'rpcEndpoint',
+          type: 'input',
+          width: '160',
+        },
         {
           label: '事务状态',
           prop: 'status',
@@ -186,12 +190,7 @@ export default {
             },
           ]
         },
-        {
-          label: '链rpc节点',
-          prop: 'rpcEndpoint',
-          type: 'input',
-          width: '160',
-        },
+
         {
           label: 'erc20地址',
           prop: 'erc20Address',
@@ -244,8 +243,12 @@ export default {
           label: '充值是否成功标价',
           prop: 'isConfirm',
           type: 'status',
-          width: '100',
-
+          width: '150',
+          labelByFun:(row)=>{
+            console.log("row",row)
+            let label = ['recharge'].includes(row.status)?'充值':'提现'
+            return label + (row.isConfirm==0?'成功':'失败')
+          },
           options: [
             {
               value: 0,

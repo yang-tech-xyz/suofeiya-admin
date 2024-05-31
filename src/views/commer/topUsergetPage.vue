@@ -71,7 +71,7 @@ export default {
 
         {
           label: '注册时间',
-          prop: 'createdDate',
+          prop: 'createTime',
           type: 'input',
           isItem: 1,
         },

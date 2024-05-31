@@ -20,6 +20,12 @@ export default {
       },
       formArr: [
         {
+          label: '用户ID',
+          prop: 'userId',
+          type: 'input',
+          search: 1,
+        },
+        {
           label: '钱包',
           prop: 'wallet',
           type: 'input',

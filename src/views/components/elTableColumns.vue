@@ -232,7 +232,13 @@
                   item.options && scope.row[item.prop] !== null && !item.isChild
                 "
               >
+                <template v-if="item.labelByFun">
+                  <el-tag effect="light">
+                    {{  item.labelByFun(scope.row[item.prop]) }}
+                  </el-tag>
+                </template>
                 <el-tag
+                    v-else
                   v-for="(iteam, index) in item.options || item.arr"
                   v-show="
                     scope.row[item.prop] != null &&
@@ -243,7 +249,7 @@
                   :effect="iteam.tagColor ? 'dark' : 'light'"
                   :type="iteam.tagColor || ''"
                 >
-                  {{ iteam.label }}
+                  {{ iteam.label  }}
                 </el-tag>
               </template>
               <template
@@ -748,7 +754,13 @@ export default {
             this.dataList = res.list || res.records
             this.$emit('dataInfo', res.list || res.records)
           } else {
-            if (this.dataObj.listUrl == '/powerConfig/') {
+            if( this.dataObj.listUrl == '/topAccountTx/getStoreStatistics' ||
+                this.dataObj.listUrl == '/topPowerSharingIncome/getStatistics' ||
+                this.dataObj.listUrl == '/topPowerSharingIncome/getStatistics'
+            ){
+              this.dataList = [res]
+            }
+            else if (this.dataObj.listUrl == '/powerConfig/') {
               this.dataList = [res]
             } else {
               this.dataList = res
