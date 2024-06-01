@@ -6,12 +6,19 @@
       :form-arr="formArr"
     >
       <template v-slot:userBtn="scope">
-        <el-button style="margin-bottom: 10px;"  v-if="scope.row.symbol == 'BTC' && scope.row.transNo" @click="isUpdateRateBTC = true;transactionNo=scope.row.transNo">
-          BTC提现审批
-        </el-button>
-        <el-button style="margin-bottom: 10px;"  v-if="scope.row.transNo" @click="isUpdateRate = true;transactionNo=scope.row.transNo;">
-          {{ ['recharge'].includes(scope.row.status)?'充值':'提现' }}审批
-        </el-button>
+        <template v-if="scope.row.status=='0x0' ">
+          <el-button style="margin-bottom: 10px;"  v-if="scope.row.symbol == 'BTC' && scope.row.transNo" @click="isUpdateRateBTC = true;transactionNo=scope.row.transNo">
+            BTC提现审批
+          </el-button>
+          <el-button style="margin-bottom: 10px;"  v-else-if="scope.row.transNo" @click="isUpdateRate = true;transactionNo=scope.row.transNo;">
+            {{ ['recharge'].includes(scope.row.status)?'充值':'提现' }}审批
+          </el-button>
+        </template>
+        <template v-else-if="scope.row.status=='0x1'">
+          <el-tag>
+            提现成功
+          </el-tag>
+        </template>
       </template>
     </elTableColumns>
     <el-dialog
@@ -115,26 +122,38 @@ export default {
         name: 'transaction',
         listUrl: '/transaction/',
         dataFormObj: {},
-        operateWidth:'260'
+        operateWidth:'260',
+        // isIndex:1,
       },
       formArr: [
-        // {
-        //   label: 'id',
-        //   prop: 'id',
-        //   type: 'input',
-        //   width: '60',
-        // },
+        {
+          label: 'id',
+          prop: 'id',
+          type: 'input',
+          width: '60',
+        },
+
         {
           label: '用户id',
           prop: 'userId',
           type: 'input',
           width: '100',
+          search: 1,
+
+        },
+
+        {
+          label: '提现时间',
+          prop: 'createTime',
+          type: 'input',
+          isItem: 1,
+          width: '100',
         },
         {
-          label: '提现接收地址',
-          prop: 'withdrawReceiveAddress',
+          label: '提现数量',
+          prop: 'withdrawAmount',
           type: 'input',
-          width: '180',
+          width: '140',
         },
         {
           label: 'token标记',
@@ -142,16 +161,12 @@ export default {
           type: 'input',
           width: '100',
         },
+
         {
-          label: '充值数量',
-          prop: 'tokenAmount',
+          label: '提现接收地址',
+          prop: 'withdrawReceiveAddress',
           type: 'input',
-        },
-        {
-          label: '提现数量',
-          prop: 'withdrawAmount',
-          type: 'input',
-          width: '140',
+          width: '180',
         },
         {
           label: '节点id',
@@ -165,6 +180,11 @@ export default {
           type: 'input',
           search: 1,
           width: '120',
+        },
+        {
+          label: '充值数量',
+          prop: 'tokenAmount',
+          type: 'input',
         },
         {
           label: '链rpc节点',
@@ -203,34 +223,6 @@ export default {
           type: 'input',
           width: '180',
         },
-
-        {
-          label: '类型',
-          prop: 'type',
-          type: 'status',
-          width: '100',
-          search: 1,
-          options: [
-            {
-              value: 'Recharge',
-              label: '充值',
-            },
-            {
-              value: 'TronRecharge',
-              label: '波场充值',
-            },{
-              value: 'Withdraw_BTC',
-              label: '提现BTC',
-            },{
-              value: 'Withdraw',
-              label: '提现',
-            },{
-              value: 'Tron_Withdraw',
-              label: '波场提现',
-            },
-          ],
-        },
-
         {
           label: '币种id',
           prop: 'tokenId',
@@ -245,9 +237,18 @@ export default {
           type: 'status',
           width: '150',
           labelByFun:(row)=>{
-            console.log("row",row)
-            let label = ['recharge'].includes(row.status)?'充值':'提现'
-            return label + (row.isConfirm==0?'成功':'失败')
+            if(row.status != '0x1'){
+              return ''
+            }
+            const dist = {
+              Recharge:"充值",
+              TronRecharge:"波场充值",
+              Withdraw_BTC:"提现BTC",
+              Withdraw:"提现",
+              Tron_Withdraw:"波场提现",
+            }
+            let label = dist[row.type]
+            return (row.isConfirm==0?'成功':'失败')
           },
           options: [
             {
@@ -281,27 +282,28 @@ export default {
 
           options: [
             {
-              value: 'recharge',
+              value: 'Recharge',
               label: '充值',
             },
             {
-              value: 'withdraw',
+              value:'TronRecharge',
+              label:'波场充值'
+            },
+            {
+              value: 'Withdraw',
               label: '提现',
             },
             {
               value: 'Withdraw_BTC',
               label: '提现BTC',
             },
+            {
+              value: 'Tron_Withdraw',
+              label: '波场提现',
+            },
           ],
         },
 
-        {
-          label: '创建日期',
-          prop: 'createTime',
-          type: 'input',
-          isItem: 1,
-          width: '100',
-        },
 
         {
           label: '更新日期',
@@ -309,6 +311,15 @@ export default {
           type: 'input',
           isItem: 1,
           width: '100',
+        },
+        {
+          label: '时间范围',
+          prop: 'startDateTime_endDateTime',
+          type: 'date',
+          search: 3,
+          isItem:1,
+          noList:1
+
         },
       ],
     }

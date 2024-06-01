@@ -129,6 +129,7 @@
         <el-table-column prop="grade" label="等级"/>
         <el-table-column prop="totalInviteUser" label="伞下用户数"/>
         <el-table-column prop="totalInvitePowerNumber" label="伞下矿机台数"/>
+        <el-table-column prop="createTime" label="注册时间"/>
       </el-table>
     </div>
 

@@ -203,6 +203,11 @@
         @selection-change="handleSelectionChange"
       >
         <el-table-column
+            v-if="dataObj.isIndex"
+            type="index"
+            align="center"
+        />
+        <el-table-column
           v-if="dataObj.isSelection"
           type="selection"
           align="center"
@@ -233,8 +238,8 @@
                 "
               >
                 <template v-if="item.labelByFun">
-                  <el-tag effect="light">
-                    {{  item.labelByFun(scope.row[item.prop]) }}
+                  <el-tag effect="light" v-if="item.labelByFun(scope.row)">
+                    {{  item.labelByFun(scope.row) }}
                   </el-tag>
                 </template>
                 <el-tag
@@ -701,16 +706,30 @@ export default {
 
         if (e.type == 'date') {
           if (dataForm[e.prop]) {
-            createTime =
-              '?' +
-              e.prop.split('_')[0] +
-              '=' +
-              this.filterTime(dataForm[e.prop][0],e.prop.split('_')[0] ) +
-              '&' +
-              e.prop.split('_')[1] +
-              '=' +
-              this.filterTime(dataForm[e.prop][1],e.prop.split('_')[1])
+            // createTime =
+            //   '?' +
+            //   e.prop.split('_')[0] +
+            //   '=' +
+            //   this.filterTime(dataForm[e.prop][0],e.prop.split('_')[0] ) +
+            //   '&' +
+            //   e.prop.split('_')[1] +
+            //   '=' +
+            //   this.filterTime(dataForm[e.prop][1],e.prop.split('_')[1])
+            // delete dataForm[e.prop]
+            let a = e.prop.split('_')[0];
+            let b = e.prop.split('_')[1];
+            console.log("params",a,b,dataForm[e.prop])
+            // params =   {
+            //   ...params
+            // }
+            params =   {
+              [a]: this.filterTime(dataForm[e.prop][0],a ),
+              [b]: this.filterTime(dataForm[e.prop][0],b ),
+              ...params
+            }
             delete dataForm[e.prop]
+            // params[b] =    this.filterTime(dataForm[e.prop][1],b)
+            console.log("a,b:",params)
           }
         }
       })
@@ -741,7 +760,7 @@ export default {
         params = {}
       }
       this.$axios[this.dataObj.axiosType || 'get'](
-        this.dataObj.listUrl + (createTime || ''),
+        this.dataObj.listUrl,  // + (createTime || ''),
         { params },
       )
         .then((res) => {
@@ -779,12 +798,24 @@ export default {
         .catch((err) => {
           this.dataListLoading = false
         })
-      console.log("调用了吗")
-      if (this.dataObj.isGetParams) {
-        console.log("调用了吗111111111")
+        if (this.dataObj.isGetParams) {
+          console.log("this.dataFormAr",this.dataFormArr)
+          this.dataFormArr.forEach((e) => {
 
-        this.$emit('isGetParams', params)
-      }
+            if (e.type == 'date') {
+              if (dataForm[e.prop]) {
+                console.log("dataForm[e.prop]",dataForm,dataForm[e.prop])
+                params = {
+                  [e.prop.split('_')[0]]:  this.filterTime(dataForm[e.prop][0],e.prop.split('_')[0] ),
+                  [e.prop.split('_')[1]]:  this.filterTime(dataForm[e.prop][1],e.prop.split('_')[1]),
+                  ...params
+                }
+                console.log("this.dataFormAr params",params)
+              }
+            }
+          })
+          this.$emit('isGetParams', params)
+        }
     },
     formatGap(receivingTime) {
       const staytimeGap =

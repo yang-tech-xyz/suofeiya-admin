@@ -1,7 +1,5 @@
 <template>
   <div>
-
-
     <elTableColumns
       ref="elTableColumns"
       :data-obj="dataObj"

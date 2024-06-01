@@ -36,7 +36,7 @@ export default {
         },
         {
           label: '金额',
-          prop: 'symbol',
+          prop: 'amount',
         },
       ],
 
@@ -115,8 +115,8 @@ export default {
   mounted() {},
   methods: {
     isGetParams(params){
-      this.$refs.elTableColumnsStatistics.getDataList(params)
       console.log("isGetParams",params)
+      this.$refs.elTableColumnsStatistics.getDataList(params)
     }
   },
 }

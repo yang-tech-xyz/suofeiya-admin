@@ -110,8 +110,11 @@
           </el-table-column>
           <el-table-column
               prop="status"
-              label="状态"
-              width="70">
+              label="事务状态"
+              width="90">
+            <template v-slot="scope">
+              <span>{{ scope.row.status=='0x0'?'未审核':scope.row.status=='0x1'?'审核通过':'审核拒绝'  }}</span>
+            </template>
           </el-table-column>
           <el-table-column
               prop="symbol"
