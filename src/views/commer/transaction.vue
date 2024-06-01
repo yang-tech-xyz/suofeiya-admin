@@ -143,17 +143,45 @@ export default {
         },
 
         {
-          label: '提现时间',
+          label: '交易时间',
           prop: 'createTime',
           type: 'input',
           isItem: 1,
           width: '100',
         },
         {
-          label: '提现数量',
-          prop: 'withdrawAmount',
+          label: '事务类型',
+          prop: 'type',
+          type: 'status',
+          width: '100',
+
+          options: [
+            {
+              value: 'Recharge',
+              label: '充值',
+            },
+            {
+              value:'TronRecharge',
+              label:'波场充值'
+            },
+            {
+              value: 'Withdraw',
+              label: '提现',
+            },
+            {
+              value: 'Withdraw_BTC',
+              label: '提现BTC',
+            },
+            {
+              value: 'Tron_Withdraw',
+              label: '波场提现',
+            },
+          ],
+        },
+        {
+          label: '交易金额',
+          prop: 'tokenAmount',
           type: 'input',
-          width: '140',
         },
         {
           label: 'token标记',
@@ -181,10 +209,12 @@ export default {
           search: 1,
           width: '120',
         },
+
         {
-          label: '充值数量',
-          prop: 'tokenAmount',
+          label: '交易金额（链上数值）',
+          prop: 'withdrawAmount',
           type: 'input',
+          width: '140',
         },
         {
           label: '链rpc节点',
@@ -274,35 +304,7 @@ export default {
 
           isItem: 1,
         },
-        {
-          label: '事务类型',
-          prop: 'type',
-          type: 'status',
-          width: '100',
 
-          options: [
-            {
-              value: 'Recharge',
-              label: '充值',
-            },
-            {
-              value:'TronRecharge',
-              label:'波场充值'
-            },
-            {
-              value: 'Withdraw',
-              label: '提现',
-            },
-            {
-              value: 'Withdraw_BTC',
-              label: '提现BTC',
-            },
-            {
-              value: 'Tron_Withdraw',
-              label: '波场提现',
-            },
-          ],
-        },
 
 
         {

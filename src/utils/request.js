@@ -9,8 +9,8 @@ import fileDownload from 'js-file-download'
 const service = axios.create({
     timeout: 50000,
     // baseURL:'https://tophisadmin.tophis.net/api/admin'
-    // baseURL: window.location.origin + '/api/admin'
-    baseURL: window.location.origin+'/tophis-admin'
+    baseURL: window.location.origin + '/api/admin'
+    // baseURL: window.location.origin+'/tophis-admin'
 
 })
 
@@ -58,7 +58,6 @@ service.interceptors.response.use(
      * You can also judge the status by HTTP Status Code
      */
     response => {
-        console.log(response)
         const res = response.data
 
         // // 导出数据

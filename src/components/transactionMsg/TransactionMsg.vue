@@ -176,21 +176,22 @@ export default {
       isUpdateRateBTC:false,
       isUpdateRate:false,
       transactionNo:"",
-
+      hash:"",
       pass:false,
 
     }
   },
   mounted() {
     setInterval(() => {
-      this.load();
+      if(this.$store.state.user.token){
+        this.load();
+      }
     }, 2000)
   },
   methods: {
     load() {
       server.get("/transaction/unAudit", {notShowError: true}).then(data => {
         this.tableData = data
-        console.log(this.tableData, "this.tableData")
       })
     },
     personal_sign() {

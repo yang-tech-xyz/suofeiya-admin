@@ -24,7 +24,7 @@ export default {
     return {
       getStatisticsDataObj:{
         name: '算力收益汇总',
-        listUrl: '/topPowerSharingIncome/getStatistics',
+        listUrl: '/topPowerOrderIncome/getStatistics',
         dataFormObj: {},
         isGetParams:1,
         noOperation:1,
@@ -33,9 +33,11 @@ export default {
         {
           label: '币种',
           prop: 'symbol',
+          type: 'input',
         },
         {
           label: '金额',
+          type: 'input',
           prop: 'income',
         },
       ],

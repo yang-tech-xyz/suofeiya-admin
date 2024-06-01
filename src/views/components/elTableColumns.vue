@@ -775,13 +775,20 @@ export default {
           } else {
             if( this.dataObj.listUrl == '/topAccountTx/getStoreStatistics' ||
                 this.dataObj.listUrl == '/topPowerSharingIncome/getStatistics' ||
-                this.dataObj.listUrl == '/topPowerSharingIncome/getStatistics'
+                this.dataObj.listUrl == '/topPowerOrderIncome/getStatistics'
             ){
-              this.dataList = [res]
+              if(Array.isArray(res)){
+                console.log("Array.isArray",res)
+                this.dataList = res;
+              }else{
+                console.log("Array.isArray2222222",res)
+                this.dataList = [res]
+              }
             }
             else if (this.dataObj.listUrl == '/powerConfig/') {
               this.dataList = [res]
-            } else {
+            }
+            else {
               this.dataList = res
 
               if (this.dataObj.listUrl == '/token/getList') {

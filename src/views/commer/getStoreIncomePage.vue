@@ -33,10 +33,13 @@ export default {
         {
           label: '币种',
           prop: 'symbol',
+          type: 'input',
+
         },
         {
           label: '金额',
           prop: 'amount',
+          type: 'input',
         },
       ],
 
