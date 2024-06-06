@@ -724,7 +724,7 @@ export default {
             // }
             params =   {
               [a]: this.filterTime(dataForm[e.prop][0],a ),
-              [b]: this.filterTime(dataForm[e.prop][0],b ),
+              [b]: this.filterTime(dataForm[e.prop][1],b ),
               ...params
             }
             delete dataForm[e.prop]

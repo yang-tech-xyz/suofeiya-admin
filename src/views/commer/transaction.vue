@@ -11,12 +11,12 @@
             BTC提现审批
           </el-button>
           <el-button style="margin-bottom: 10px;"  v-else-if="scope.row.transNo" @click="isUpdateRate = true;transactionNo=scope.row.transNo;">
-            {{ ['recharge'].includes(scope.row.status)?'充值':'提现' }}审批
+            {{ ['Recharge','TronRecharge'].includes(scope.row.type)?'充值':'提现' }}审批
           </el-button>
         </template>
-        <template v-else-if="scope.row.status=='0x1'">
+        <template v-else-if="scope.row.status=='0x1' && scope.row.isConfirm==1">
           <el-tag>
-            提现成功
+            {{ ['Recharge','TronRecharge'].includes(scope.row.type)?'充值':'提现' }}成功
           </el-tag>
         </template>
       </template>
@@ -262,7 +262,7 @@ export default {
 
 
         {
-          label: '充值是否成功标价',
+          label: '区块是否确认',
           prop: 'isConfirm',
           type: 'status',
           width: '150',
@@ -278,7 +278,7 @@ export default {
               Tron_Withdraw:"波场提现",
             }
             let label = dist[row.type]
-            return (row.isConfirm==0?'成功':'失败')
+            return (row.isConfirm==1?'已确认':'未确认')
           },
           options: [
             {

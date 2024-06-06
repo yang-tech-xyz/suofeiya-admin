@@ -40,7 +40,7 @@ export default {
         {
           label: '投资周期',
           prop: 'period',
-          type: 'status',
+          type: 'input',
           options:[],
           search: 1,
 

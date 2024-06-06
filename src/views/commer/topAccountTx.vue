@@ -24,7 +24,7 @@ export default {
     return {
       getStatisticsDataObj:{
         name: '算力收益汇总',
-        listUrl: '/topAccountTx/getStoreStatistics',
+        listUrl: '/topAccountTx/getStatistics',
         dataFormObj: {},
         isGetParams:1,
         noOperation:1,
@@ -104,6 +104,15 @@ export default {
           label: '流水号',
           prop: 'transactionNo',
           type: 'input',
+        },
+        {
+          label: '时间范围',
+          prop: 'startDateTime_endDateTime',
+          type: 'date',
+          search: 1,
+          isItem: 1,
+          noList: 1
+
         },
         // {
         //   label: '状态',

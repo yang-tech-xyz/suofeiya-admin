@@ -10,7 +10,7 @@ const service = axios.create({
     timeout: 50000,
     // baseURL:'https://tophisadmin.tophis.net/api/admin'
     baseURL: window.location.origin + '/api/admin'
-    // baseURL: window.location.origin+'/tophis-admin'
+    // baseURL: window.location.origin + '/tophis-admin'
 
 })
 
