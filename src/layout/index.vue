@@ -162,11 +162,16 @@ export default {
               id: 14,
               name: '统计',
               path: '/analyse',
-            },           
+            },
             {
               id: 12,
               name: '公告管理',
               path: '/showList',
+            },
+            {
+              id: 12,
+              name: 'BTCF销毁管理',
+              path: '/BTCFBurning',
             },
                                                                                                                                                                                                                      
           ],
