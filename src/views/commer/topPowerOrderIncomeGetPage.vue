@@ -1,10 +1,20 @@
 <template>
   <div>
     <elTableColumns
-      ref="elTableColumns"
-      :data-obj="dataObj"
-      :form-arr="formArr"
-    />
+        ref="elTableColumns"
+        :data-obj="dataObj"
+        :form-arr="formArr"
+        @isGetParams="isGetParams"
+    >
+      <template v-slot:btnOther>
+        <elTableColumns
+            ref="elTableColumnsStatistics"
+            :noShowOp="true"
+            :data-obj="getStatisticsDataObj"
+            :form-arr="getStatisticsFormArr"
+        />
+      </template>
+    </elTableColumns>
   </div>
 </template>
 
@@ -12,24 +22,46 @@
 export default {
   data() {
     return {
+      getStatisticsDataObj: {
+        name: '算力收益汇总',
+        listUrl: '/topPowerOrderIncome/getStatistics',
+        dataFormObj: {},
+        isGetParams: 1,
+        noOperation: 1,
+      },
+      getStatisticsFormArr: [
+        {
+          label: '币种',
+          prop: 'symbol',
+          type: 'input',
+        },
+        {
+          label: '金额',
+          type: 'input',
+          prop: 'income',
+        },
+      ],
       dataObj: {
         name: '算力收益明细',
         listUrl: '/topPowerOrderIncome/getPage',
         dataFormObj: {},
+        isGetParams: 1,
         noOperation: 1,
       },
       formArr: [
+        {
+          label: '用户ID',
+          prop: 'userId',
+          type: 'input',
+          search: 1,
+        },
         {
           label: '钱包',
           prop: 'wallet',
           type: 'input',
           search: 1,
         },
-        {
-          label: '用户ID',
-          prop: 'userId',
-          type: 'input',
-        },
+
         {
           label: '订单号',
           prop: 'orderNo',
@@ -89,16 +121,22 @@ export default {
           prop: 'startDate_endDate',
           type: 'date',
           search: 1,
-          isItem:1,
-          noList:1
-
+          isItem: 1,
+          noList: 1
         },
       ],
     }
   },
 
-  mounted() {},
-  methods: {},
+  mounted() {
+
+  },
+  methods: {
+    isGetParams(params) {
+      this.$refs.elTableColumnsStatistics.getDataList(params)
+      console.log("isGetParams", params)
+    }
+  },
 }
 </script>
 <style lang="scss" scoped></style>

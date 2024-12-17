@@ -92,7 +92,7 @@
           </el-form-item>
         </span>
 
-        <span class="btns" style="display: inline-block;">
+        <span class="btns" style="display: inline-block;" v-if="!noShowOp">
           <el-form-item v-if="dataFormArr.length">
             <el-button
               type="primary"
@@ -203,6 +203,11 @@
         @selection-change="handleSelectionChange"
       >
         <el-table-column
+            v-if="dataObj.isIndex"
+            type="index"
+            align="center"
+        />
+        <el-table-column
           v-if="dataObj.isSelection"
           type="selection"
           align="center"
@@ -232,7 +237,13 @@
                   item.options && scope.row[item.prop] !== null && !item.isChild
                 "
               >
+                <template v-if="item.labelByFun">
+                  <el-tag effect="light" v-if="item.labelByFun(scope.row)">
+                    {{  item.labelByFun(scope.row) }}
+                  </el-tag>
+                </template>
                 <el-tag
+                    v-else
                   v-for="(iteam, index) in item.options || item.arr"
                   v-show="
                     scope.row[item.prop] != null &&
@@ -243,7 +254,7 @@
                   :effect="iteam.tagColor ? 'dark' : 'light'"
                   :type="iteam.tagColor || ''"
                 >
-                  {{ iteam.label }}
+                  {{ iteam.label  }}
                 </el-tag>
               </template>
               <template
@@ -619,6 +630,7 @@ export default {
   props: {
     formArr: { type: Array, default: [] },
     dataObj: { type: Object, default: {} },
+    noShowOp:false,
     isSecondary: { type: String, default: '' },
   },
 
@@ -668,7 +680,7 @@ export default {
     },
 
     // 列表查询
-    getDataList() {
+    getDataList(params) {
       if (this.dataObj.isObj) {
         this.dataList = [this.dataObj.detailObj]
         this.dataListLoading = false
@@ -694,16 +706,30 @@ export default {
 
         if (e.type == 'date') {
           if (dataForm[e.prop]) {
-            createTime =
-              '?' +
-              e.prop.split('_')[0] +
-              '=' +
-              this.filterTime(dataForm[e.prop][0],e.prop.split('_')[0] ) +
-              '&' +
-              e.prop.split('_')[1] +
-              '=' +
-              this.filterTime(dataForm[e.prop][1],e.prop.split('_')[1])
+            // createTime =
+            //   '?' +
+            //   e.prop.split('_')[0] +
+            //   '=' +
+            //   this.filterTime(dataForm[e.prop][0],e.prop.split('_')[0] ) +
+            //   '&' +
+            //   e.prop.split('_')[1] +
+            //   '=' +
+            //   this.filterTime(dataForm[e.prop][1],e.prop.split('_')[1])
+            // delete dataForm[e.prop]
+            let a = e.prop.split('_')[0];
+            let b = e.prop.split('_')[1];
+            console.log("params",a,b,dataForm[e.prop])
+            // params =   {
+            //   ...params
+            // }
+            params =   {
+              [a]: this.filterTime(dataForm[e.prop][0],a ),
+              [b]: this.filterTime(dataForm[e.prop][1],b ),
+              ...params
+            }
             delete dataForm[e.prop]
+            // params[b] =    this.filterTime(dataForm[e.prop][1],b)
+            console.log("a,b:",params)
           }
         }
       })
@@ -719,16 +745,22 @@ export default {
           dataForm['accId'] = this.$route.query.accId
         }
       }
-
-      let params = {
+      if (this.dataObj.name == '用户列表') {
+        console.log("this.dataObj",this.dataObj.dataFormObj)
+        if (dataForm.id) {
+          dataForm['userId'] = dataForm.id
+        }
+      }
+      params = {
         ...dataForm,
         ...this.dataObj.dataFormObj,
+        ...params
       }
       if (this.dataObj.noParameters) {
         params = {}
       }
       this.$axios[this.dataObj.axiosType || 'get'](
-        this.dataObj.listUrl + (createTime || ''),
+        this.dataObj.listUrl,  // + (createTime || ''),
         { params },
       )
         .then((res) => {
@@ -741,9 +773,22 @@ export default {
             this.dataList = res.list || res.records
             this.$emit('dataInfo', res.list || res.records)
           } else {
-            if (this.dataObj.listUrl == '/powerConfig/') {
+            if( this.dataObj.listUrl == '/topAccountTx/getStoreStatistics' ||
+                this.dataObj.listUrl == '/topPowerSharingIncome/getStatistics' ||
+                this.dataObj.listUrl == '/topPowerOrderIncome/getStatistics'
+            ){
+              if(Array.isArray(res)){
+                console.log("Array.isArray",res)
+                this.dataList = res;
+              }else{
+                console.log("Array.isArray2222222",res)
+                this.dataList = [res]
+              }
+            }
+            else if (this.dataObj.listUrl == '/powerConfig/') {
               this.dataList = [res]
-            } else {
+            }
+            else {
               this.dataList = res
 
               if (this.dataObj.listUrl == '/token/getList') {
@@ -755,13 +800,29 @@ export default {
           }
 
           this.dataListLoading = false
-          if (this.dataObj.isGetParams) {
-            this.$emit('isGetParams', params)
-          }
+
         })
         .catch((err) => {
           this.dataListLoading = false
         })
+        if (this.dataObj.isGetParams) {
+          console.log("this.dataFormAr",this.dataFormArr)
+          this.dataFormArr.forEach((e) => {
+
+            if (e.type == 'date') {
+              if (dataForm[e.prop]) {
+                console.log("dataForm[e.prop]",dataForm,dataForm[e.prop])
+                params = {
+                  [e.prop.split('_')[0]]:  this.filterTime(dataForm[e.prop][0],e.prop.split('_')[0] ),
+                  [e.prop.split('_')[1]]:  this.filterTime(dataForm[e.prop][1],e.prop.split('_')[1]),
+                  ...params
+                }
+                console.log("this.dataFormAr params",params)
+              }
+            }
+          })
+          this.$emit('isGetParams', params)
+        }
     },
     formatGap(receivingTime) {
       const staytimeGap =
@@ -840,6 +901,8 @@ export default {
     },
     changeFn(e, prop) {
       const obj = JSON.parse(JSON.stringify(e))
+      obj['userId'] = e.id
+
       if (this.dataObj.name == '用户管理') {
         obj['lockFlag'] = e.lockFlag
         const postList = []
@@ -854,6 +917,7 @@ export default {
 
         obj['role'] = postList
       }
+      console.log("changeFn",obj)
 
       this.$axios[this.dataObj.axiosSwitchType || 'put'](
         this.dataObj.switchUrl,

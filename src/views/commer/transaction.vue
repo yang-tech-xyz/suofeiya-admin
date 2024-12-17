@@ -6,12 +6,19 @@
       :form-arr="formArr"
     >
       <template v-slot:userBtn="scope">
-        <el-button style="margin-bottom: 10px;"  v-if="scope.row.symbol == 'BTC' && scope.row.transNo" @click="isUpdateRateBTC = true;transactionNo=scope.row.transNo">
-          BTC提现审批
-        </el-button>
-        <el-button style="margin-bottom: 10px;"  v-if="scope.row.transNo" @click="isUpdateRate = true;transactionNo=scope.row.transNo;">
-          提现审批
-        </el-button>
+        <template v-if="scope.row.status=='0x0' ">
+          <el-button style="margin-bottom: 10px;"  v-if="scope.row.symbol == 'BTC' && scope.row.transNo" @click="isUpdateRateBTC = true;transactionNo=scope.row.transNo">
+            BTC提现审批
+          </el-button>
+          <el-button style="margin-bottom: 10px;"  v-else-if="scope.row.transNo" @click="isUpdateRate = true;transactionNo=scope.row.transNo;">
+            {{ ['Recharge','TronRecharge'].includes(scope.row.type)?'充值':'提现' }}审批
+          </el-button>
+        </template>
+        <template v-else-if="scope.row.status=='0x1' && scope.row.isConfirm==1">
+          <el-tag>
+            {{ ['Recharge','TronRecharge'].includes(scope.row.type)?'充值':'提现' }}成功
+          </el-tag>
+        </template>
       </template>
     </elTableColumns>
     <el-dialog
@@ -115,7 +122,8 @@ export default {
         name: 'transaction',
         listUrl: '/transaction/',
         dataFormObj: {},
-        operateWidth:'260'
+        operateWidth:'260',
+        // isIndex:1,
       },
       formArr: [
         {
@@ -124,44 +132,69 @@ export default {
           type: 'input',
           width: '60',
         },
+
         {
-          label: '事务编号',
-          prop: 'transNo',
+          label: '用户id',
+          prop: 'userId',
           type: 'input',
-          width: '180',
-        },
-        {
-          label: '链hash',
-          prop: 'hash',
-          type: 'input',
+          width: '100',
           search: 1,
-          width: '280',
+
+        },
+
+        {
+          label: '交易时间',
+          prop: 'createTime',
+          type: 'input',
+          isItem: 1,
+          width: '100',
         },
         {
-          label: '类型',
+          label: '事务类型',
           prop: 'type',
           type: 'status',
           width: '100',
-          search: 1,
+
           options: [
             {
               value: 'Recharge',
               label: '充值',
             },
             {
-              value: 'TronRecharge',
-              label: '波场充值',
-            },{
-              value: 'Withdraw_BTC',
-              label: '提现BTC',
-            },{
+              value:'TronRecharge',
+              label:'波场充值'
+            },
+            {
               value: 'Withdraw',
               label: '提现',
-            },{
+            },
+            {
+              value: 'Withdraw_BTC',
+              label: '提现BTC',
+            },
+            {
               value: 'Tron_Withdraw',
               label: '波场提现',
             },
           ],
+        },
+        {
+          label: '交易金额',
+          prop: 'tokenAmount',
+          type: 'input',
+        },
+        {
+          label: 'token标记',
+          prop: 'symbol',
+          type: 'input',
+          width: '100',
+        },
+
+        {
+          label: '提现接收地址',
+          prop: 'withdrawReceiveAddress',
+          type: 'input',
+          width: '180',
         },
         {
           label: '节点id',
@@ -170,10 +203,18 @@ export default {
           width: '80',
         },
         {
-          label: '币种id',
-          prop: 'tokenId',
+          label: '链hash',
+          prop: 'hash',
           type: 'input',
-          width: '80',
+          search: 1,
+          width: '120',
+        },
+
+        {
+          label: '交易金额（链上数值）',
+          prop: 'withdrawAmount',
+          type: 'input',
+          width: '140',
         },
         {
           label: '链rpc节点',
@@ -184,26 +225,61 @@ export default {
         {
           label: '事务状态',
           prop: 'status',
+          type: 'status',
+          width: '80',
+          options: [
+            {
+              value: '0x0',
+              label: '未审核',
+            }, {
+              value: '0x1',
+              label: '审核通过',
+            },{
+              value: '0x2',
+              label: '审核拒绝',
+            },
+          ]
+        },
+
+        {
+          label: 'erc20地址',
+          prop: 'erc20Address',
+          type: 'input',
+          width: '200',
+        },
+        {
+          label: '事务编号',
+          prop: 'transNo',
+          type: 'input',
+          width: '180',
+        },
+        {
+          label: '币种id',
+          prop: 'tokenId',
           type: 'input',
           width: '80',
         },
+
+
         {
-          label: 'token标记',
-          prop: 'symbol',
-          type: 'input',
-          width: '100',
-        },
-        {
-          label: '充值数量',
-          prop: 'tokenAmount',
-          type: 'input',
-        },
-        {
-          label: '充值是否成功标价',
+          label: '区块是否确认',
           prop: 'isConfirm',
           type: 'status',
-          width: '100',
-
+          width: '150',
+          labelByFun:(row)=>{
+            if(row.status != '0x1'){
+              return ''
+            }
+            const dist = {
+              Recharge:"充值",
+              TronRecharge:"波场充值",
+              Withdraw_BTC:"提现BTC",
+              Withdraw:"提现",
+              Tron_Withdraw:"波场提现",
+            }
+            let label = dist[row.type]
+            return (row.isConfirm==1?'已确认':'未确认')
+          },
           options: [
             {
               value: 0,
@@ -221,11 +297,6 @@ export default {
           type: 'input',
         },
         {
-          label: '用户id',
-          prop: 'userId',
-          type: 'input',
-        },
-        {
           label: '区块链确认',
           prop: 'blockConfirm',
           type: 'input',
@@ -233,54 +304,8 @@ export default {
 
           isItem: 1,
         },
-        {
-          label: '事务类型',
-          prop: 'type',
-          type: 'status',
-          width: '100',
 
-          options: [
-            {
-              value: 'recharge',
-              label: '充值',
-            },
-            {
-              value: 'withdraw',
-              label: '提现',
-            },
-            {
-              value: 'Withdraw_BTC',
-              label: '提现BTC',
-            },
-          ],
-        },
-   
-        {
-          label: 'erc20地址',
-          prop: 'erc20Address',
-          type: 'input',
-          width: '200',
-        },
-        {
-          label: '提现接收地址',
-          prop: 'withdrawReceiveAddress',
-          type: 'input',
-          width: '180',
-        },
-        {
-          label: '提现数量',
-          prop: 'withdrawAmount',
-          type: 'input',
-          width: '140',
-        },
 
-        {
-          label: '创建日期',
-          prop: 'createTime',
-          type: 'input',
-          isItem: 1,
-          width: '100',
-        },
 
         {
           label: '更新日期',
@@ -288,6 +313,15 @@ export default {
           type: 'input',
           isItem: 1,
           width: '100',
+        },
+        {
+          label: '时间范围',
+          prop: 'startDateTime_endDateTime',
+          type: 'date',
+          search: 3,
+          isItem:1,
+          noList:1
+
         },
       ],
     }

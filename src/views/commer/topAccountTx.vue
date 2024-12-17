@@ -1,10 +1,20 @@
 <template>
   <div>
     <elTableColumns
-      ref="elTableColumns"
-      :data-obj="dataObj"
-      :form-arr="formArr"
-    />
+        ref="elTableColumns"
+        @isGetParams="isGetParams"
+        :data-obj="dataObj"
+        :form-arr="formArr"
+    >
+    <template v-slot:btnOther>
+      <elTableColumns
+          ref="elTableColumnsStatistics"
+          :noShowOp="true"
+          :data-obj="getStatisticsDataObj"
+          :form-arr="getStatisticsFormArr"
+      />
+    </template>
+    </elTableColumns>
   </div>
 </template>
 
@@ -12,13 +22,39 @@
 export default {
   data() {
     return {
+      getStatisticsDataObj:{
+        name: '算力收益汇总',
+        listUrl: '/topAccountTx/getStatistics',
+        dataFormObj: {},
+        isGetParams:1,
+        noOperation:1,
+      },
+      getStatisticsFormArr:[
+        {
+          label: '币种',
+          prop: 'symbol',
+          type: 'input',
+        },
+        {
+          label: '金额',
+          prop: 'amount',
+          type: 'input',
+        },
+      ],
       dataObj: {
         name: '资产流水',
         listUrl: '/topAccountTx/getPage',
         dataFormObj: {},
+        isGetParams:1,
         noOperation: 1,
       },
       formArr: [
+        {
+          label: '用户ID',
+          prop: 'userId',
+          type: 'input',
+          search: 1,
+        },
         {
           label: '钱包地址',
           prop: 'wallet',
@@ -68,6 +104,15 @@ export default {
           label: '流水号',
           prop: 'transactionNo',
           type: 'input',
+        },
+        {
+          label: '时间范围',
+          prop: 'startDateTime_endDateTime',
+          type: 'date',
+          search: 1,
+          isItem: 1,
+          noList: 1
+
         },
         // {
         //   label: '状态',
@@ -131,10 +176,6 @@ export default {
               label: '理财利息',
             },
             {
-              value: 'STORE_INTEREST_INVITE',
-              label: '理财邀请收益',
-            },
-            {
               value: 'POWER_DAILY_INCOME',
               label: '挖矿收益',
             },
@@ -151,8 +192,14 @@ export default {
             }, {
               value: 'TRON_WITHDRAW',
               label: '波场提现',
+            }, {
+              value: 'STORE_INTEREST_INVITE',
+              label: '理财邀请收益',
+            }, {
+              value: 'WITHDRAW_FEE',
+              label: '提现手续费',
             },
-            
+
           ],
         },
         {
@@ -190,6 +237,10 @@ export default {
     this.tokengetList()
   },
   methods: {
+    isGetParams(params){
+      console.log("isGetParams",params)
+      this.$refs.elTableColumnsStatistics.getDataList(params)
+    },
     tokengetList() {
       this.$axios.get('/token/getList').then((res) => {
         this.formArr.forEach((r) => {

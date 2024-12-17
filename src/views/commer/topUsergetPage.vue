@@ -16,13 +16,18 @@ export default {
         name: '用户列表',
         listUrl: '/topUser/getPage',
         dataFormObj: {},
-        noOperation:1
+        noOperation:1,
+
+        axiosSwitchType:'post',
+        switchUrl:'/topUser/blockEnabled',
+
       },
       formArr: [
         {
           label: '用户id',
           prop: 'id',
           type: 'input',
+          search: 1,
         },
         {
           label: '钱包地址',
@@ -63,12 +68,21 @@ export default {
           prop: 'btcTransferAddress',
           type: 'input',
         },
-    
+
         {
           label: '注册时间',
-          prop: 'createdDate',
+          prop: 'createTime',
           type: 'input',
           isItem: 1,
+        },
+        {
+          label: '是否禁用',
+          prop: 'blockEnabled',
+          type: 'switch',
+          switchBtn:1,
+          switchObj:{
+            activeValue:true,
+          },
         },
 
       ],
