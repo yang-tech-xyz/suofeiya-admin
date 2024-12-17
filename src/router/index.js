@@ -131,6 +131,16 @@ export const constantRoutes = [
         name: 'user',
         meta: { title: '提现管理', icon: 'user', affix: true },
       },{
+        path: '/transactionDayStatic',
+        component: () => import('@/views/commer/transactionDayStatic'),
+        name: 'user',
+        meta: { title: '出入金日统计', icon: 'user', affix: true },
+      },{
+        path: '/transactionMonthStatic',
+        component: () => import('@/views/commer/transactionMonthStatic'),
+        name: 'user',
+        meta: { title: '出入金日统计', icon: 'user', affix: true },
+      },{
         path: '/rechargeManagement',
         component: () => import('@/views/commer/rechargeManagement'),
         name: 'user',

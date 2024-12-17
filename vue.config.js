@@ -38,18 +38,21 @@ module.exports = {
             errors: true
         },
         proxy: {
-            // '/': {
-            //   // target: process.env.VUE_APP_BASE_API,
-            //   target:'http://43.136.88.180:18081',
-            //   changeOrigin: true,
-            // },
-            '/api': {
-                target: 'http://43.136.88.180:18082', // 代理的目标地址
-                changeOrigin: true, // 是否改变源
-                pathRewrite: {
-                    '^/api/admin': '/'
-                }
+            '/': {
+              // target: process.env.VUE_APP_BASE_API,
+              target:'http://127.0.0.1:8082',
+              changeOrigin: true,
+              pathRewrite: {
+                '^/tophis-admin': '/'
             }
+            },
+            // '/api': {
+            //     target: 'http://43.136.88.180:18082', // 代理的目标地址
+            //     changeOrigin: true, // 是否改变源
+            //     pathRewrite: {
+            //         '^/api/admin': '/'
+            //     }
+            // }
         }
     },
     configureWebpack: {

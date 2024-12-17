@@ -147,11 +147,16 @@ export default {
               name: '提现管理',
               path: '/transaction',
             },
-            // {
-            //   id: 12,
-            //   name: '充值管理',
-            //   path: '/rechargeManagement',
-            // },
+            {
+              id: 12,
+              name: '出入金日统计',
+              path: '/transactionDayStatic',
+            },
+            {
+              id: 15,
+              name: '出入金月统计',
+              path: '/transactionMonthStatic',
+            },
             
             {
               id: 11,
