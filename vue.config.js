@@ -43,7 +43,7 @@ module.exports = {
               target:'http://127.0.0.1:8082',
               changeOrigin: true,
               pathRewrite: {
-                '^/tophis-admin': '/'
+                '^/api/admin': '/'
             }
             },
             // '/api': {
