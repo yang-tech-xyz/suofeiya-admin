@@ -144,7 +144,7 @@ export const constantRoutes = [
                 path: '/transactionMonthStatic',
                 component: () => import('@/views/commer/transactionMonthStatic'),
                 name: 'user',
-                meta: { title: '出入金日统计', icon: 'user', affix: true },
+                meta: { title: '出入金月统计', icon: 'user', affix: true },
             }, {
                 path: '/rechargeManagement',
                 component: () => import('@/views/commer/rechargeManagement'),

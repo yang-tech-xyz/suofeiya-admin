@@ -31,46 +31,22 @@ export default {
           width: '180',
         },
         {
-          label: '提现日期',
-          prop: 'withdrawCreatedDate',
-          type: 'input',
-          width: '180',
-        },
-        {
-          label: '提现币种',
-          prop: 'withdrawSymbol',
-          type: 'input',
-          width: '100',
-        },
-        {
-          label: '提现操作',
-          prop: 'withdrawOperation',
-          type: 'input',
-          width: '80',
-        },
-        {
           label: '充值数量',
           prop: 'rechargeAmount',
           type: 'input',
           width: '180',
         },
         {
-          label: '充值日期',
-          prop: 'rechargeCreatedDate',
-          type: 'input',
-          width: '160',
-        },
-        {
           label: '充值币种',
-          prop: 'rechargeSymbol',
+          prop: 'symbol',
           type: 'input',
           width: '100',
         },
         {
-          label: '充值操作',
-          prop: 'rechargeOperation',
+          label: '操作日期',
+          prop: 'operateDate',
           type: 'input',
-          width: '120',
+          width: '160',
         }
       ],
     }
