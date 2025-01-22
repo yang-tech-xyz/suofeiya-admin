@@ -25,7 +25,7 @@ export default {
   },
   data() {
     return {
-      title: '托菲斯',
+      title: '4arts',
       logo: require('../../../assets/img/logo4.png'),
       logo2: require('../../../assets/img/logo4.png')
     }

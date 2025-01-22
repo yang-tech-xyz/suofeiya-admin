@@ -182,11 +182,11 @@ export default {
     }
   },
   mounted() {
-    setInterval(() => {
-      if(this.$store.state.user.token){
-        this.load();
-      }
-    }, 2000)
+    // setInterval(() => {
+    //   if(this.$store.state.user.token){
+    //     this.load();
+    //   }
+    // }, 2000)
   },
   methods: {
     load() {

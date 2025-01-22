@@ -40,12 +40,12 @@ export const constantRoutes = [
     {
         path: '/',
         component: Layout,
-        redirect: '/layout',
+        redirect: '/userInfo',
         children: [
             {
-                path: 'layout',
-                component: () => import('@/views/commer/topUsergetPage'),
-                name: 'layout',
+                path: 'userInfo',
+                component: () => import('@/views/commer/topUserInfogetPage'),
+                name: 'userInfoList',
                 meta: {title: '用户列表', icon: 'layout', affix: true},
             },
         ],
@@ -55,10 +55,10 @@ export const constantRoutes = [
         component: Layout,
         children: [
             {
-                path: '/userList',
-                component: () => import('@/views/commer/userList'),
-                name: 'user',
-                meta: {title: '管理员列表', icon: 'user', affix: true},
+                path: '/userWorkTokenList',
+                component: () => import('@/views/commer/userWorkTokenListPage'),
+                name: 'userWorkTokenList',
+                meta: {title: '用户空投列表', icon: 'user', affix: true},
             },
             {
                 path: '/analyse',

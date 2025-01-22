@@ -78,15 +78,20 @@ export default {
             {
               id: 1,
               name: '用户列表',
-              path: '/layout',
+              path: '/userInfo',
             },
             {
               id: 2,
+              name: '用户空投列表',
+              path: '/userWorkTokenList',
+            },
+            {
+              id: 3,
               name: '用户资产',
               path: '/topAccount/getPage',
             },
             {
-              id: 3,
+              id: 4,
               name: '资产流水',
               path: '/topAccountTx/getPage',
             },
@@ -175,8 +180,8 @@ export default {
             },
             {
               id: 12,
-              name: 'BTCF销毁管理',
-              path: '/BTCFBurning',
+              name: 'Ent销毁管理',
+              path: '/EntBurning',
             },
                                                                                                                                                                                                                      
           ],

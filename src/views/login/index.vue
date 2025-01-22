@@ -15,7 +15,7 @@
         label-position="left"
       >
         <div class="title-container">
-          <h3 class="title">托菲斯</h3>
+          <h3 class="title">4arts</h3>
         </div>
         <el-form-item prop="account">
           <img class="icon" src="../../assets/img/1.png" alt="">
@@ -86,7 +86,7 @@
       >
 
         <div class="title-container">
-          <h3 class="title">托菲斯</h3>
+          <h3 class="title">4arts</h3>
         </div>
 
         <el-form-item v-show="loginForm.grant_type == 'mobile'" prop="mobile">
