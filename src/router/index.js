@@ -40,7 +40,9 @@ export const constantRoutes = [
     {
         path: '/',
         component: Layout,
-        redirect: '/userInfo',
+        component: () => import('@/views/commer/boardPage'),
+        name: 'board',
+        // redirect: '/userInfo',
         children: [
             {
                 path: 'userInfo',
