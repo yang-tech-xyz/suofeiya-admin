@@ -42,7 +42,7 @@ export const constantRoutes = [
         component: Layout,
         component: () => import('@/views/commer/boardPage'),
         name: 'board',
-        // redirect: '/userInfo',
+        redirect: '/dashboard',
         children: [
             {
                 path: 'userInfo',
@@ -56,6 +56,12 @@ export const constantRoutes = [
         path: '/index',
         component: Layout,
         children: [
+            {
+                path: '/dashboard',
+                component: () => import('@/views/commer/boardPage'),
+                name: 'dashboard',
+                meta: {title: '看板', icon: 'user', affix: true},
+            },
             {
                 path: '/userWorkTokenList',
                 component: () => import('@/views/commer/userWorkTokenListPage'),
