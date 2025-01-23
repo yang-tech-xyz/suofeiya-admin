@@ -30,6 +30,12 @@ export default {
           search: 1,
         },
         {
+          label: '用户名',
+          prop: 'username',
+          type: 'input',
+          addOrEdit: 1,
+        },
+        {
           label: '钱包地址',
           prop: 'walletAddress',
           type: 'input',
@@ -47,10 +53,9 @@ export default {
           type: 'input',
           search: 1,
         },
-
         {
-          label: '用户名',
-          prop: 'username',
+          label: 'FanToken持有总数',
+          prop: 'fanTokenAmount',
           type: 'input',
           addOrEdit: 1,
         },

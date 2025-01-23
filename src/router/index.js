@@ -44,18 +44,19 @@ export const constantRoutes = [
         name: 'board',
         // redirect: '/userInfo',
         children: [
-            {
-                path: 'userInfo',
-                component: () => import('@/views/commer/topUserInfogetPage'),
-                name: 'userInfoList',
-                meta: {title: '用户列表', icon: 'layout', affix: true},
-            },
+            
         ],
     },
     {
         path: '/index',
         component: Layout,
         children: [
+            {
+                path: '/userInfo',
+                component: () => import('@/views/commer/topUserInfogetPage'),
+                name: 'userInfoList',
+                meta: {title: '用户列表', icon: 'layout', affix: true},
+            },
             {
                 path: '/userWorkTokenList',
                 component: () => import('@/views/commer/userWorkTokenListPage'),
