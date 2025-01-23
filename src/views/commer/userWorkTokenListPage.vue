@@ -30,13 +30,14 @@ export default {
           search: 1,
         },
         {
-          label: '用户uid',
-          prop: 'uid',
+          label: '钱包地址',
+          prop: 'walletAddress',
           type: 'input',
+          search: 1,
         },
         {
-          label: '作品id',
-          prop: 'workId',
+          label: '推广人数',
+          prop: 'invitedAmount',
           type: 'input',
           search: 1,
         },

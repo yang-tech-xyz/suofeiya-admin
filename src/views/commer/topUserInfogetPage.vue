@@ -36,9 +36,16 @@ export default {
           search: 1,
         },
         {
-          label: '用户uid',
-          prop: 'uid',
+          label: '参与活动次数',
+          prop: 'attendActiveTime',
           type: 'input',
+          search: 1,
+        },
+        {
+          label: '拉新用户数',
+          prop: 'invitedNewUserAmount',
+          type: 'input',
+          search: 1,
         },
 
         {
@@ -50,8 +57,17 @@ export default {
         {
           label: '状态',
           prop: 'status',
-          type: 'input',
-          addOrEdit: 1,
+          type: 'status',
+          options: [
+            {
+              value: 0,
+              label: '是',
+            },
+            {
+              value: 1,
+              label: '否',
+            },
+          ],
         },
         {
           label: '创建时间',
