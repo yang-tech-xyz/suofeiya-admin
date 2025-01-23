@@ -60,6 +60,18 @@ export default {
           addOrEdit: 1,
         },
         {
+          label: 'FanToken使用数量',
+          prop: 'fanTokenUseAmount',
+          type: 'input',
+          addOrEdit: 1,
+        },
+        {
+          label: '观看作品次数',
+          prop: 'watchWorkTime',
+          type: 'input',
+          addOrEdit: 1,
+        },
+        {
           label: '状态',
           prop: 'status',
           type: 'status',
