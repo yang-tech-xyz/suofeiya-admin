@@ -13,7 +13,7 @@ export default {
   data() {
     return {
       dataObj: {
-        name: '用户空投列表',
+        name: 'ENT空投数量',
         listUrl: '/userWorkTokenList/getPage',
         dataFormObj: {},
         noOperation:1,
@@ -50,11 +50,6 @@ export default {
         {
           label: '创建时间',
           prop: 'createTime',
-          type: 'input',
-        },
-        {
-          label: '更新时间',
-          prop: 'updateTime',
           type: 'input',
         },
 

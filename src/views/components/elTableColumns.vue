@@ -112,6 +112,15 @@
             </el-button>
           </el-form-item>
 
+          <el-form-item v-if="dataObj">
+            <el-switch
+                v-model="scope.row[item.prop]"
+                :active-value="item.switchObj.activeValue"
+                :disabled="item.switchBtn == 1 ? false : true"
+                :inactive-value="item.switchObj.inactiveValue"
+                @change="changeFn(scope.row, item.prop)"
+              />
+          </el-form-item>
           <el-form-item v-if="dataObj && dataObj.addUrl">
             <el-button
               type="primary"
@@ -242,7 +251,7 @@
                     {{  item.labelByFun(scope.row) }}
                   </el-tag>
                 </template>
-                <el-tag
+                <!-- <el-tag
                     v-else
                   v-for="(iteam, index) in item.options || item.arr"
                   v-show="
@@ -255,7 +264,7 @@
                   :type="iteam.tagColor || ''"
                 >
                   {{ iteam.label  }}
-                </el-tag>
+                </el-tag> -->
               </template>
               <template
                 v-if="

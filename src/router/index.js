@@ -67,7 +67,7 @@ export const constantRoutes = [
                 path: '/userWorkTokenList',
                 component: () => import('@/views/commer/userWorkTokenListPage'),
                 name: 'userWorkTokenList',
-                meta: {title: '用户空投列表', icon: 'user', affix: true},
+                meta: {title: 'ENT空投数量', icon: 'user', affix: true},
             },
             {
                 path: '/analyse',

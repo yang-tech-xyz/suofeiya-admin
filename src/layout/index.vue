@@ -82,7 +82,7 @@ export default {
             },
             {
               id: 2,
-              name: '用户空投列表',
+              name: 'ENT空投数量',
               path: '/userWorkTokenList',
             },
             {

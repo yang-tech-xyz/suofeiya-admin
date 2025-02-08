@@ -71,31 +71,31 @@ export default {
           type: 'input',
           addOrEdit: 1,
         },
-        {
-          label: '状态',
-          prop: 'status',
-          type: 'status',
-          options: [
-            {
-              value: 0,
-              label: '是',
-            },
-            {
-              value: 1,
-              label: '否',
-            },
-          ],
-        },
+        // {
+        //   label: '状态',
+        //   prop: 'status',
+        //   type: 'status',
+        //   options: [
+        //     {
+        //       value: 0,
+        //       label: '是',
+        //     },
+        //     {
+        //       value: 1,
+        //       label: '否',
+        //     },
+        //   ],
+        // },
         {
           label: '创建时间',
           prop: 'createTime',
           type: 'input',
         },
-        {
-          label: '更新时间',
-          prop: 'updateTime',
-          type: 'input',
-        },
+        // {
+        //   label: '更新时间',
+        //   prop: 'updateTime',
+        //   type: 'input',
+        // },
 
       ],
     }
