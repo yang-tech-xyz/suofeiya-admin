@@ -376,7 +376,7 @@
                 :active-value="item.switchObj.activeValue"
                 :disabled="item.switchBtn == 1 ? false : true"
                 :inactive-value="item.switchObj.inactiveValue"
-                @change="changeFn(scope.row, item.prop)"
+                @change="changeWalletFn()"
               />
             </div>
 
@@ -907,6 +907,10 @@ export default {
       this.datetimerangeTime = null
       this.datetimerangeTime2 = null
       this.getDataList()
+      this.
+    },
+    changeWalletFn(){
+
     },
     changeFn(e, prop) {
       const obj = JSON.parse(JSON.stringify(e))
